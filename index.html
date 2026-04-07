@@ -178,7 +178,6 @@
             opacity: 0.8;
         }
 
-        /* Create Account Dummy Link */
         .create-account {
             text-align: center;
             margin-top: 20px;
@@ -324,7 +323,7 @@
             <button class="logout-btn" onclick="logout()">Logout</button>
         </header>
         <div class="container">
-            <div class="welcome-msg">Welcome Minosh,</div>
+            <div class="welcome-msg" id="user-greeting">Welcome,</div>
             <div class="section-title">Live Classes Available</div>
             <div class="grid-list">
                 <div class="card" onclick="openCourse('MSc')">MSc</div>
@@ -395,19 +394,28 @@
 
         let currentCourse = "";
 
-        // Application Initialization & Login Persistence Logic
+        // Application Initialization
         window.addEventListener('load', () => {
             setTimeout(() => {
                 document.getElementById('splash-screen').classList.add('hidden');
                 
-                // Check if user is already logged in
                 if (localStorage.getItem('isLoggedIn') === 'true') {
+                    const savedEmail = localStorage.getItem('userEmail');
+                    setGreeting(savedEmail);
+                    history.replaceState({ page: 'dashboard' }, '', '#dashboard');
                     document.getElementById('dashboard-screen').classList.remove('hidden');
                 } else {
+                    history.replaceState({ page: 'login' }, '', '#login');
                     document.getElementById('login-screen').classList.remove('hidden');
                 }
             }, 3000);
         });
+
+        // Greeting Logic
+        function setGreeting(email) {
+            const name = email === "minoshvcn@gmail.com" ? "Minosh" : "Dennis";
+            document.getElementById('user-greeting').innerText = `Welcome ${name},`;
+        }
 
         // Login Logic
         document.getElementById('login-form').addEventListener('submit', function(e) {
@@ -416,9 +424,16 @@
             const password = document.getElementById('password').value;
             const errorMsg = document.getElementById('login-error');
 
-            if (email === "minoshvcn@gmail.com" && password === "Minosh1987") {
-                // Save login state to localStorage
+            if ((email === "minoshvcn@gmail.com" && password === "Minosh1987") || 
+                (email === "dennisvcn@gmail.com" && password === "Dennis 2026")) {
+                
                 localStorage.setItem('isLoggedIn', 'true');
+                localStorage.setItem('userEmail', email);
+                
+                setGreeting(email);
+                
+                // Set history state for device back alignment
+                history.pushState({ page: 'dashboard' }, '', '#dashboard');
                 
                 document.getElementById('login-screen').classList.add('hidden');
                 document.getElementById('dashboard-screen').classList.remove('hidden');
@@ -430,36 +445,45 @@
 
         // Logout Logic
         function logout() {
-            // Remove login state from localStorage
             localStorage.removeItem('isLoggedIn');
+            localStorage.removeItem('userEmail');
             
-            // Clear inputs just in case
             document.getElementById('email').value = "";
             document.getElementById('password').value = "";
-            
-            // Stop any playing video
             document.getElementById('youtube-player').src = ""; 
             
-            // Hide all potential open screens
+            // Set history state to prevent user from going "back" into the app after logout
+            history.pushState({ page: 'login' }, '', '#login');
+            
             document.getElementById('dashboard-screen').classList.add('hidden');
             document.getElementById('course-screen').classList.add('hidden');
             document.getElementById('video-screen').classList.add('hidden');
             
-            // Show login screen
             document.getElementById('login-screen').classList.remove('hidden');
         }
 
-        // Navigation: Dashboard -> Course
+        // --- NAVIGATION LOGIC ---
+
+        function showScreen(screenId) {
+            ['login-screen', 'dashboard-screen', 'course-screen', 'video-screen'].forEach(id => {
+                document.getElementById(id).classList.add('hidden');
+            });
+            document.getElementById(screenId).classList.remove('hidden');
+        }
+
+        // Dashboard -> Course
         function openCourse(courseName) {
             currentCourse = courseName;
-            document.getElementById('dashboard-screen').classList.add('hidden');
-            document.getElementById('course-screen').classList.remove('hidden');
+            
+            // Push into Browser History stack
+            history.pushState({ page: 'course' }, '', '#course');
+            
+            showScreen('course-screen');
             document.getElementById('course-title').innerText = courseName;
 
             const classListContainer = document.getElementById('class-list');
-            classListContainer.innerHTML = ""; // Clear old list
+            classListContainer.innerHTML = ""; 
 
-            // Generate 4 Live Classes
             for (let i = 1; i <= 4; i++) {
                 const classItem = document.createElement('div');
                 classItem.className = "class-card";
@@ -476,32 +500,49 @@
             }
         }
 
-        // Navigation: Course -> Dashboard
-        function goBackToDashboard() {
-            document.getElementById('course-screen').classList.add('hidden');
-            document.getElementById('dashboard-screen').classList.remove('hidden');
-        }
-
-        // Navigation: Course -> Video
+        // Course -> Video
         function openVideo(classNumber) {
-            document.getElementById('course-screen').classList.add('hidden');
-            document.getElementById('video-screen').classList.remove('hidden');
+            // Push into Browser History stack
+            history.pushState({ page: 'video' }, '', '#video');
             
+            showScreen('video-screen');
             document.getElementById('playing-class-title').innerText = `${currentCourse} - Live Class ${classNumber}`;
             
-            // Fetch the specific URL based on the Current Course AND the Class Number
             const videoUrl = classUrls[currentCourse][classNumber];
             document.getElementById('youtube-player').src = videoUrl;
         }
 
-        // Navigation: Video -> Course
-        function goBackToCourse() {
-            // Stop video playing on back by clearing the src
-            document.getElementById('youtube-player').src = ""; 
-            
-            document.getElementById('video-screen').classList.add('hidden');
-            document.getElementById('course-screen').classList.remove('hidden');
+        // On-screen Back Buttons just trigger the Browser Back event naturally
+        function goBackToDashboard() {
+            history.back();
         }
+
+        function goBackToCourse() {
+            history.back();
+        }
+
+        // The Magic Hardware Back Button Listener
+        window.addEventListener('popstate', (event) => {
+            // Always cut the video if we hit back
+            document.getElementById('youtube-player').src = ""; 
+
+            const state = event.state ? event.state.page : '';
+
+            if (state === 'video') {
+                showScreen('video-screen');
+            } else if (state === 'course') {
+                showScreen('course-screen');
+            } else if (state === 'dashboard') {
+                showScreen('dashboard-screen');
+            } else {
+                // If there's no state (root), default back based on auth
+                if (localStorage.getItem('isLoggedIn') === 'true') {
+                    showScreen('dashboard-screen');
+                } else {
+                    showScreen('login-screen');
+                }
+            }
+        });
     </script>
 </body>
 </html>
