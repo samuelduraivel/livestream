@@ -680,7 +680,7 @@
             // Check if the URL is a Google Meet link
             if (videoUrl.includes("meet.google.com")) {
                 // This is the "Deep Link" - it forces the phone to open the Meet App
-                window.location.href = videoUrl; 
+                window.open(videoUrl, '_blank'); 
                 return; // Stop the code here so it doesn't open the blank video screen
             }
 
