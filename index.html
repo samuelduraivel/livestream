@@ -237,16 +237,6 @@
             font-size: 1.8rem;
             color: #aaa;
         }
-        
-        /* NEW: Custom styling for the SIS Card */
-        .sis-card {
-            border-left: 5px solid #E67E22; /* Different color for distinction */
-        }
-        .sis-card .icon-text {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
 
         /* Class Details Screen */
         .class-card {
@@ -298,63 +288,6 @@
             font-size: 1.3rem;
             margin-bottom: 10px;
         }
-
-        /* NEW: Student Information System (SIS) Screen Styles */
-        .profile-header {
-            text-align: center;
-            margin-bottom: 25px;
-        }
-        .profile-header img {
-            width: 110px;
-            height: 110px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 4px solid var(--primary-color);
-            margin-bottom: 15px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-        }
-        .profile-header h2 {
-            color: var(--secondary-color);
-            font-size: 1.4rem;
-        }
-        .info-group {
-            background: var(--card-bg);
-            padding: 16px;
-            border-radius: 8px;
-            margin-bottom: 12px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.03);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .info-label {
-            font-weight: 600;
-            color: #555;
-            font-size: 0.95rem;
-        }
-        .info-value {
-            color: var(--secondary-color);
-            font-weight: bold;
-            text-align: right;
-            max-width: 60%;
-        }
-        .fee-list {
-            list-style: none;
-            padding: 0;
-            margin-bottom: 20px;
-        }
-        .fee-list li {
-            background: var(--card-bg);
-            padding: 12px 15px;
-            border-radius: 8px;
-            margin-bottom: 8px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.03);
-            font-size: 0.95rem;
-            display: flex;
-            justify-content: space-between;
-        }
-        .status-paid { color: #27ae60; font-weight: bold; }
-        .status-pending { color: #e74c3c; font-weight: bold; }
     </style>
 </head>
 <body>
@@ -392,57 +325,14 @@
         </header>
         <div class="container">
             <div class="welcome-msg" id="user-greeting">Welcome,</div>
-            
-            <div class="section-title" style="margin-top: 0;">Student Portal</div>
-            <div class="grid-list" style="margin-bottom: 25px;">
-                <div class="card sis-card" onclick="openSIS()">
-                    <div class="icon-text"><span>👤</span> My Profile & Fees</div>
-                </div>
-            </div>
 
             <div class="section-title">Live Classes Available</div>
             <div class="grid-list">
-                <div class="card" onclick="openCourse('MSc')">MSc</div>
-                <div class="card" onclick="openCourse('BSc')">BSc</div>
-                <div class="card" onclick="openCourse('PBBSc')">PBBSc</div>
-                <div class="card" onclick="openCourse('GNM')">GNM</div>
+                <div class="card" onclick="openCourse('BSc first semester')">BSc first semester</div>
+                <div class="card" onclick="openCourse('BSc third semester')">BSc third semester</div>
+                <div class="card" onclick="openCourse('BSc fifth semester')">BSc fifth semester</div>
+                <div class="card" onclick="openCourse('BSc seventh semester')">BSc seventh semester</div>
             </div>
-        </div>
-    </div>
-
-    <div id="sis-screen" class="screen hidden">
-        <header>
-            <button class="back-btn" onclick="goBackToDashboard()">← Back</button>
-            <span>Student Info</span>
-        </header>
-        <div class="container">
-            <div class="profile-header">
-                <img id="sis-photo" src="" alt="Student Photo">
-                <h2 id="sis-name">Student Name</h2>
-                <p id="sis-course" style="color: #666; font-size: 0.9rem; margin-top: 5px;">Enrolled Course</p>
-            </div>
-
-            <div class="section-title">Personal Details</div>
-            <div class="info-group">
-                <span class="info-label">Blood Group</span>
-                <span class="info-value" id="sis-blood">--</span>
-            </div>
-            <div class="info-group">
-                <span class="info-label">Address</span>
-                <span class="info-value" id="sis-address">--</span>
-            </div>
-
-            <div class="section-title" style="margin-top: 20px;">Academics & Accounts</div>
-            <div class="info-group">
-                <span class="info-label">Overall Attendance</span>
-                <span class="info-value" id="sis-attendance">--</span>
-            </div>
-            
-            <div class="section-title" style="margin-top: 20px;">Fee History</div>
-            <ul class="fee-list" id="sis-fee-history">
-                </ul>
-
-            <button class="btn" style="background-color: #27ae60; margin-top: 10px;" onclick="alert('Redirecting to secure payment gateway...')">Pay Pending Fees</button>
         </div>
     </div>
 
@@ -477,59 +367,37 @@
 
     <script>
         // --- DATA LAYER ---
-        const classUrls = {
-            "MSc": {
-                1: "https://meet.google.com/giy-kvkm-jac", // Typo fixed here
-                2: "https://www.youtube.com/embed/4wG7jVO7CPk?si=ad9HY3M9bIf-5EeJ",
-                3: "https://www.youtube.com/embed/4wG7jVO7CPk?si=ad9HY3M9bIf-5EeJ",
-                4: "https://www.youtube.com/embed/4wG7jVO7CPk?si=ad9HY3M9bIf-5EeJ"
-            },
-            "BSc": {
-                1: "https://www.youtube.com/embed/jNQXAC9IVRw", 
-                2: "https://www.youtube.com/embed/YQHsXMglC9A",
-                3: "https://www.youtube.com/embed/2ZIpFytCSVc",
-                4: "https://www.youtube.com/embed/V-_O7nl0Ii0"
-            },
-            "PBBSc": {
-                1: "https://www.youtube.com/embed/tPEE9ZwTmy0",
-                2: "https://www.youtube.com/embed/9bZkp7q19f0",
-                3: "https://www.youtube.com/embed/kJQP7kiw5Fk",
-                4: "https://www.youtube.com/embed/fJ9rUzIMcZQ"
-            },
-            "GNM": {
-                1: "https://www.youtube.com/embed/3JZ_D3ELwOQ",
-                2: "https://www.youtube.com/embed/L_jWHffIx5E",
-                3: "https://www.youtube.com/embed/pRpeEdMmi3I",
-                4: "https://www.youtube.com/embed/09R8_2nJtjg"
-            }
-        };
-
-        // NEW: Dummy Student Database for the SIS
-        const studentDatabase = {
-            "minoshvcn@gmail.com": {
-                name: "Minosh",
-                course: "MSc Nursing",
-                photo: "https://ui-avatars.com/api/?name=Minosh&background=4A90E2&color=fff&size=200",
-                bloodGroup: "O+ (Positive)",
-                address: "#42, Jubilee Campus Quarters, Bengaluru",
-                attendance: "94%",
-                fees: [
-                    { term: "Term 1 (2025)", status: "Paid", class: "status-paid" },
-                    { term: "Term 2 (2026)", status: "Paid", class: "status-paid" }
-                ]
-            },
-            "dennisvcn@gmail.com": {
-                name: "Dennis",
-                course: "BSc Nursing",
-                photo: "https://ui-avatars.com/api/?name=Dennis&background=E67E22&color=fff&size=200",
-                bloodGroup: "A- (Negative)",
-                address: "108 Tech Avenue, Koramangala, Bengaluru",
-                attendance: "81%",
-                fees: [
-                    { term: "Term 1 (2025)", status: "Paid", class: "status-paid" },
-                    { term: "Term 2 (2026)", status: "Pending", class: "status-pending" }
-                ]
-            }
+        const courseData = {
+            "BSc first semester": [
+                { title: "Applied Physiology", time: "09:00 AM - 11:00 AM", instructor: "Dr. Kavya", url: "https://meet.google.com/giy-kvkm-jac" },
+                { title: "Applied ANA", time: "11:00 AM - 12:00 PM", instructor: "Mrs. Divia Acha Jacob", url: "https://meet.google.com/giy-kvkm-jac" },
+                { title: "NF-I Viva (Admission)", time: "12:00 PM - 01:00 PM", instructor: "Mrs. Shilpa .L", url: "https://meet.google.com/giy-kvkm-jac" },
+                { title: "Applied ANA", time: "02:00 PM - 03:00 PM", instructor: "Mrs. Divia Acha Jacob", url: "https://meet.google.com/giy-kvkm-jac" },
+                { title: "NF-I Viva (Admission)", time: "03:00 PM - 04:00 PM", instructor: "Mrs. Shilpa .L", url: "https://meet.google.com/giy-kvkm-jac" }
+            ],
+            "BSc third semester": [
+                { title: "Pharmacology-I", time: "09:00 AM - 11:00 AM", instructor: "Mrs. Divia", url: "https://meet.google.com/giy-kvkm-jac" },
+                { title: "Adult Health Nursing - I VIVA", time: "11:00 AM - 12:00 PM", instructor: "Mr. Abhiram", url: "https://meet.google.com/giy-kvkm-jac" },
+                { title: "Adult Health Nursing - I VIVA", time: "02:00 PM - 03:00 PM", instructor: "Ms. Roshini", url: "https://meet.google.com/giy-kvkm-jac" },
+                { title: "Adult Health Nursing - I VIVA", time: "03:00 PM - 04:00 PM", instructor: "Ms. Asline", url: "https://meet.google.com/giy-kvkm-jac" }
+            ],
+            "BSc fifth semester": [
+                { title: "CHN I", time: "09:00 AM - 10:00 AM", instructor: "Ms. Bineeta", url: "https://meet.google.com/giy-kvkm-jac" },
+                { title: "MHN I", time: "10:00 AM - 11:00 AM", instructor: "Ms. Feeba", url: "https://meet.google.com/giy-kvkm-jac" },
+                { title: "Forensic Nursing", time: "11:00 AM - 12:00 PM", instructor: "Ms. Asline", url: "https://meet.google.com/giy-kvkm-jac" },
+                { title: "MHN I", time: "12:00 PM - 01:00 PM", instructor: "Mr. Sagar", url: "https://meet.google.com/giy-kvkm-jac" },
+                { title: "COHN", time: "02:00 PM - 03:00 PM", instructor: "Ms. Feeba", url: "https://meet.google.com/giy-kvkm-jac" },
+                { title: "COHN", time: "03:00 PM - 04:00 PM", instructor: "Mr. Sagar", url: "https://meet.google.com/giy-kvkm-jac" },
+                { title: "CHN I", time: "04:00 PM - 05:00 PM", instructor: "Ms. Bineeta", url: "https://meet.google.com/giy-kvkm-jac" }
+            ],
+            "BSc seventh semester": [
+                { title: "COHN II", time: "09:00 AM - 10:00 AM", instructor: "Mrs. Geetha S T", url: "https://meet.google.com/giy-kvkm-jac" },
+                { title: "Midwifery II", time: "10:00 AM - 11:00 AM", instructor: "Mrs. Sangeetha", url: "https://meet.google.com/giy-kvkm-jac" },
+                { title: "Nursing Research", time: "11:00 AM - 12:00 PM", instructor: "Mrs. Manimegalai.S", url: "https://meet.google.com/giy-kvkm-jac" },
+                { title: "COHN II", time: "12:00 PM - 01:00 PM", instructor: "Mrs. Geetha S T", url: "https://meet.google.com/giy-kvkm-jac" },
+                { title: "Midwifery II", time: "02:00 PM - 03:00 PM", instructor: "Mrs. Manimegalai", url: "https://meet.google.com/giy-kvkm-jac" },
+                { title: "Midwifery II", time: "03:00 PM - 04:00 PM", instructor: "Mrs. Sangeetha", url: "https://meet.google.com/giy-kvkm-jac" }
+            ]
         };
 
         let currentCourse = "";
@@ -598,7 +466,6 @@
             document.getElementById('dashboard-screen').classList.add('hidden');
             document.getElementById('course-screen').classList.add('hidden');
             document.getElementById('video-screen').classList.add('hidden');
-            document.getElementById('sis-screen').classList.add('hidden'); // NEW
             
             document.getElementById('login-screen').classList.remove('hidden');
         }
@@ -606,42 +473,10 @@
         // --- NAVIGATION LOGIC ---
 
         function showScreen(screenId) {
-            // Updated to include sis-screen
-            ['login-screen', 'dashboard-screen', 'course-screen', 'video-screen', 'sis-screen'].forEach(id => {
+            ['login-screen', 'dashboard-screen', 'course-screen', 'video-screen'].forEach(id => {
                 document.getElementById(id).classList.add('hidden');
             });
             document.getElementById(screenId).classList.remove('hidden');
-        }
-
-        // NEW: Dashboard -> Student Information System (SIS)
-        function openSIS() {
-            history.pushState({ page: 'sis' }, '', '#sis');
-            
-            const email = localStorage.getItem('userEmail');
-            // Fallback to Minosh's data if for some reason email isn't in database
-            const student = studentDatabase[email] || studentDatabase["minoshvcn@gmail.com"];
-            
-            // Populate Data
-            document.getElementById('sis-photo').src = student.photo;
-            document.getElementById('sis-name').innerText = student.name;
-            document.getElementById('sis-course').innerText = student.course;
-            document.getElementById('sis-blood').innerText = student.bloodGroup;
-            document.getElementById('sis-address').innerText = student.address;
-            document.getElementById('sis-attendance').innerText = student.attendance;
-            
-            // Populate Fees
-            const feeList = document.getElementById('sis-fee-history');
-            feeList.innerHTML = "";
-            student.fees.forEach(fee => {
-                feeList.innerHTML += `
-                    <li>
-                        <span>${fee.term}</span>
-                        <span class="${fee.class}">${fee.status}</span>
-                    </li>
-                `;
-            });
-
-            showScreen('sis-screen');
         }
 
         // Dashboard -> Course
@@ -657,25 +492,29 @@
             const classListContainer = document.getElementById('class-list');
             classListContainer.innerHTML = ""; 
 
-            for (let i = 1; i <= 4; i++) {
-                const classItem = document.createElement('div');
-                classItem.className = "class-card";
-                classItem.onclick = () => openVideo(i);
-                
-                classItem.innerHTML = `
-                    <div class="class-icon">▶</div>
-                    <div>
-                        <div style="font-weight: bold; font-size: 1.1rem; margin-bottom: 3px;">Live Class ${i}</div>
-                        <div style="font-size: 0.85rem; color: #888;">${courseName} • Tap to join</div>
-                    </div>
-                `;
-                classListContainer.appendChild(classItem);
+            const classes = courseData[courseName];
+            if (classes) {
+                classes.forEach((classData, index) => {
+                    const classItem = document.createElement('div');
+                    classItem.className = "class-card";
+                    classItem.onclick = () => openVideo(index);
+                    
+                    classItem.innerHTML = `
+                        <div class="class-icon">▶</div>
+                        <div>
+                            <div style="font-weight: bold; font-size: 1.1rem; margin-bottom: 3px;">${classData.title}</div>
+                            <div style="font-size: 0.85rem; color: #888;">${classData.time} • ${classData.instructor}</div>
+                        </div>
+                    `;
+                    classListContainer.appendChild(classItem);
+                });
             }
         }
 
         // Course -> Video (FIXED)
-        function openVideo(classNumber) {
-            const videoUrl = classUrls[currentCourse][classNumber];
+        function openVideo(index) {
+            const classInfo = courseData[currentCourse][index];
+            const videoUrl = classInfo.url;
 
             // Check if the URL is a Google Meet link
             if (videoUrl.includes("meet.google.com")) {
@@ -688,7 +527,7 @@
             history.pushState({ page: 'video' }, '', '#video');
             
             showScreen('video-screen');
-            document.getElementById('playing-class-title').innerText = `${currentCourse} - Live Class ${classNumber}`;
+            document.getElementById('playing-class-title').innerText = `${classInfo.title} (${classInfo.instructor})`;
             
             document.getElementById('youtube-player').src = videoUrl;
         }
@@ -713,8 +552,6 @@
                 showScreen('video-screen');
             } else if (state === 'course') {
                 showScreen('course-screen');
-            } else if (state === 'sis') {
-                showScreen('sis-screen'); // NEW
             } else if (state === 'dashboard') {
                 showScreen('dashboard-screen');
             } else {
