@@ -157,6 +157,27 @@
             font-size: 1rem;
             outline: none;
         }
+        
+        .password-wrapper {
+            position: relative;
+            width: 100%;
+        }
+
+        .password-wrapper input {
+            padding-right: 40px;
+        }
+
+        .toggle-password {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #666;
+            font-size: 1.1rem;
+        }
 
         .input-group input:focus {
             border-color: var(--primary-color);
@@ -178,17 +199,15 @@
             opacity: 0.8;
         }
 
-        .create-account {
+        .contact-support {
             text-align: center;
             margin-top: 20px;
             font-size: 0.95rem;
             color: #666;
         }
 
-        .create-account a {
+        .contact-support strong {
             color: var(--primary-color);
-            text-decoration: none;
-            font-weight: bold;
         }
 
         /* Dashboard Screen */
@@ -233,9 +252,54 @@
         }
 
         .card::after {
-            content: "›";
+            content: "\203A";
             font-size: 1.8rem;
             color: #aaa;
+        }
+
+        /* Assignment UI Elements */
+        .assignment-card {
+            background: var(--card-bg);
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 12px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            border-left: 4px solid #E67E22;
+        }
+
+        .assignment-title {
+            font-weight: bold;
+            font-size: 1.1rem;
+            margin-bottom: 5px;
+            color: var(--secondary-color);
+        }
+
+        .assignment-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .action-btn {
+            flex: 1;
+            padding: 8px 12px;
+            border: none;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            font-weight: bold;
+            cursor: pointer;
+            text-align: center;
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .action-btn.secondary {
+            background-color: #eee;
+            color: #333;
+        }
+
+        .action-btn:active {
+            opacity: 0.8;
         }
 
         /* Class Details Screen */
@@ -307,14 +371,19 @@
                 </div>
                 <div class="input-group">
                     <label for="password">Password</label>
-                    <input type="password" id="password" placeholder="Enter your password" required>
+                    <div class="password-wrapper">
+                        <input type="password" id="password" placeholder="Enter your password" required>
+                        <button type="button" class="toggle-password" id="toggle-password-btn" onclick="togglePasswordVisibility()">&#128065;</button>
+                    </div>
                 </div>
                 <button type="submit" class="btn">Sign In</button>
             </form>
             
-            <p id="login-error" style="color: red; text-align: center; margin-top: 15px; font-size: 0.9rem; display: none;">Invalid credentials!</p>
+            <p id="login-error" style="color: red; text-align: center; margin-top: 15px; font-size: 0.9rem; display: none;">
+                Invalid credentials!
+            </p>
             
-            <p class="create-account">Don't have an account? <a href="#" onclick="alert('This is a dummy account creation page.'); return false;">Create one</a></p>
+            <p class="contact-support">To reset password, contact <strong>+91 8754955367</strong></p>
         </div>
     </div>
 
@@ -325,39 +394,48 @@
         </header>
         <div class="container">
             <div class="welcome-msg" id="user-greeting">Welcome,</div>
+            <div id="today-date" style="font-size: 0.9rem; color: #888; margin-bottom: 15px;"></div>
+
+            <!-- Student Only: Pending Assignments -->
+            <div id="student-assignments-section" class="hidden">
+                <div class="section-title">Pending Assignments</div>
+                <div id="pending-assignments-list" class="grid-list">
+                    <!-- Populated dynamically -->
+                </div>
+                <div style="text-align: center; font-size: 0.85rem; color: #888; margin-top: 10px; margin-bottom: 20px;">
+                    (Ignore if already submitted)
+                </div>
+            </div>
 
             <div class="section-title">Live Classes Available</div>
-            <div class="grid-list">
-                <div class="card" onclick="openCourse('BSc first semester')">BSc first semester</div>
-                <div class="card" onclick="openCourse('BSc third semester')">BSc third semester</div>
-                <div class="card" onclick="openCourse('BSc fifth semester')">BSc fifth semester</div>
-                <div class="card" onclick="openCourse('BSc seventh semester')">BSc seventh semester</div>
+            <div class="grid-list" id="semester-cards-list">
+                <!-- Populated dynamically based on role -->
             </div>
         </div>
     </div>
 
     <div id="course-screen" class="screen hidden">
         <header>
-            <button class="back-btn" onclick="goBackToDashboard()">← Back</button>
+            <button class="back-btn" onclick="goBackToDashboard()">&#8592; Back</button>
             <span id="course-title">Course Name</span>
         </header>
         <div class="container" id="class-list">
-            </div>
+        </div>
     </div>
 
     <div id="video-screen" class="screen hidden">
         <header>
-            <button class="back-btn" onclick="goBackToCourse()">← Back</button>
+            <button class="back-btn" onclick="goBackToCourse()">&#8592; Back</button>
             <span>Live Class</span>
         </header>
         <div class="video-wrapper">
             <iframe 
-    id="youtube-player" 
-    src="" 
-    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-    referrerpolicy="strict-origin-when-cross-origin" 
-    allowfullscreen>
-</iframe>
+                id="youtube-player" 
+                src="" 
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                referrerpolicy="strict-origin-when-cross-origin" 
+                allowfullscreen>
+            </iframe>
         </div>
         <div class="video-details">
             <h2 class="video-title" id="playing-class-title">Live Class</h2>
@@ -401,6 +479,496 @@
         };
 
         let currentCourse = "";
+        let semesterEmails = {
+            "BSc first semester": [],
+            "BSc third semester": [],
+            "BSc fifth semester": [],
+            "BSc seventh semester": []
+        };
+
+        // Full CSV data from the uploaded form
+        const rawCSVData = `"Timestamp","Full Name","Email","Batch"
+"2026/04/13 4:40:58 pm GMT+5:30","Elizabeth Merlin Varughese ","melizabeth1994@yahoo.com","Seventh Semester"
+"2026/04/13 4:40:59 pm GMT+5:30","Pradeep.M","pr4.deep2004@gmail.com","Seventh Semester"
+"2026/04/13 4:41:26 pm GMT+5:30","Adithya Sajeev","sajeevadithya87@gmail.com","Seventh Semester"
+"2026/04/13 4:42:07 pm GMT+5:30","Josena.l","josnajose1209@gmail.com","Seventh Semester"
+"2026/04/13 4:42:26 pm GMT+5:30","Radhika v v","radhikavv2545@gmail.com","Seventh Semester"
+"2026/04/13 4:42:49 pm GMT+5:30","Nesvin pr ","neswinpr@gmail.com","Seventh Semester"
+"2026/04/13 4:43:11 pm GMT+5:30","Gowri Das","gowridas347@gmail.com","Seventh Semester"
+"2026/04/13 4:43:28 pm GMT+5:30","Nesvin pr ","neswinpr@gmail.com","Seventh Semester"
+"2026/04/13 4:44:38 pm GMT+5:30","JeffinBiju ","jeffinbiju7@gmail.com","Seventh Semester"
+"2026/04/13 4:46:46 pm GMT+5:30","Ajay Abraham ","ajayabrahamajayabraham@gmail.com","Seventh Semester"
+"2026/04/13 4:46:57 pm GMT+5:30","Praveena. P","praveena26410@gmail.com","Seventh Semester"
+"2026/04/13 4:48:12 pm GMT+5:30","Anjana Anilkumar ","anjanathangu454@g","Seventh Semester"
+"2026/04/13 4:49:11 pm GMT+5:30","RENIN K RAJU ","Reninkraju06@gmail.com","Fifth Semester"
+"2026/04/13 4:49:33 pm GMT+5:30","Felix byju ","felixbyju4@gmail.com","Fifth Semester"
+"2026/04/13 4:49:53 pm GMT+5:30","Aleena Ajikumar ","Aleenaajikumar82@gmail.com","Fifth Semester"
+"2026/04/13 4:50:03 pm GMT+5:30","Josmy k john","Josmykjohn121@gmail.c","Fifth Semester"
+"2026/04/13 4:50:56 pm GMT+5:30","Abiya john","abiyajohn13@gmail.com","Fifth Semester"
+"2026/04/13 4:51:17 pm GMT+5:30","Krishnendhu krishnakumar ","Krishnendhu17205@gmail.com","Fifth Semester"
+"2026/04/13 4:52:26 pm GMT+5:30","GOWRI.R.NAIR","ammu19grn@gmail.com","Fifth Semester"
+"2026/04/13 4:55:07 pm GMT+5:30","Jerrisha Jerry ","jerrisha736@gmail.com ","Third Semester"
+"2026/04/13 4:55:21 pm GMT+5:30","Prarthana ","prarthanaprarthana109 @gmail.com","Third Semester"
+"2026/04/13 4:55:45 pm GMT+5:30","Ardra Moncy","ardramoncy101@gmail.com","Seventh Semester"
+"2026/04/13 4:55:47 pm GMT+5:30","Jihana m.p ","jihanajasmin16@gmail.com","Third Semester"
+"2026/04/13 4:56:01 pm GMT+5:30","Aneeta Ani ","aneetaani498@gmail.com","Seventh Semester"
+"2026/04/13 4:56:07 pm GMT+5:30","Aiswarya. S","aiswarya0412374@gmail.com","Fifth Semester"
+"2026/04/13 4:56:10 pm GMT+5:30","Arshia Liz Thomas","arshializ072005@gmail.com","Fifth Semester"
+"2026/04/13 4:56:40 pm GMT+5:30","Arathi.A","arathiaru361@gmail.com","Fifth Semester"
+"2026/04/13 4:56:42 pm GMT+5:30","Athulya Mol M K ","athulyamolmk3371@gmail.com","Third Semester"
+"2026/04/13 4:57:02 pm GMT+5:30","Abhijith paulose ","Abhijithpaulos800@gamail.com","Third Semester"
+"2026/04/13 4:57:16 pm GMT+5:30","Albin P Thomas ","albinpt345@gmail.com","Fifth Semester"
+"2026/04/13 4:57:35 pm GMT+5:30","Sneha M","snehamm2868@gmail.com","Fifth Semester"
+"2026/04/13 4:57:38 pm GMT+5:30","Arathi.A","arathiaru361@gmail.com","Fifth Semester"
+"2026/04/13 4:58:36 pm GMT+5:30","Anumol Unnikrishnan ","aunnikrishnan787@gmail.com","Fifth Semester"
+"2026/04/13 4:58:40 pm GMT+5:30","Helna Seemon ","helnaseemon@gmail.com","Third Semester"
+"2026/04/13 4:58:48 pm GMT+5:30","Sonamol kunjumon ","Kunjumonjessy91@gmail. Com","Third Semester"
+"2026/04/13 4:59:50 pm GMT+5:30","Sreya biju ","sreyabiju899@gmail.com","Third Semester"
+"2026/04/13 5:00:40 pm GMT+5:30","Bincy john","johnbincy47@gmail.com","Fifth Semester"
+"2026/04/13 5:01:56 pm GMT+5:30","Dhanya B","dhanyab2278@gmail.com","Fifth Semester"
+"2026/04/13 5:02:43 pm GMT+5:30","BINCY JOHN","johnbincy47@gmail.com","Fifth Semester"
+"2026/04/13 5:02:57 pm GMT+5:30","Philip christian ","pcchristin12@gmail.com","Fifth Semester"
+"2026/04/13 5:04:01 pm GMT+5:30","Angel Grace Binu","angelgbinu@gmail.com","Third Semester"
+"2026/04/13 5:04:01 pm GMT+5:30","Reni Reji ","renireji476@gmail.com","Third Semester"
+"2026/04/13 5:04:30 pm GMT+5:30","Adithya. P. Balachandran ","adithyapbalachandran05@gmail.com","Third Semester"
+"2026/04/13 5:04:43 pm GMT+5:30","Saniya.P. Saju","Saniyapsaju@gmail.com","Third Semester"
+"2026/04/13 5:04:48 pm GMT+5:30","Gladwin Immanuel ","gladwinimmanuel471@gmail.com","Fifth Semester"
+"2026/04/13 5:05:22 pm GMT+5:30","Christa Sara Joy ","christasarajoy21@gmail.com","Fifth Semester"
+"2026/04/13 5:05:24 pm GMT+5:30","Vaishnavi P","vaishnavipreetha08@gmail.com","Seventh Semester"
+"2026/04/13 5:05:30 pm GMT+5:30","Merlin varghese","merlinvarghese@gamil.com","Fifth Semester"
+"2026/04/13 5:05:42 pm GMT+5:30","Anakha maria George ","anakhamariageorge996@gmail.com","Third Semester"
+"2026/04/13 5:05:49 pm GMT+5:30","FARSANA ASHRAF ","farsanaashraf17@gmail.com ","Seventh Semester"
+"2026/04/13 5:05:50 pm GMT+5:30","Krishna u s","krishnasunil6114@gmail.com","Third Semester"
+"2026/04/13 5:05:55 pm GMT+5:30","Selin Abraham","selinabraham1@gmail.com","Fifth Semester"
+"2026/04/13 5:06:03 pm GMT+5:30","Hannah mariam stanley ","hannahmariamstanley@gmail.com","Seventh Semester"
+"2026/04/13 5:06:11 pm GMT+5:30","Annexteena Pauly ","annexteenapauly01102@gmail.com","Fifth Semester"
+"2026/04/13 5:06:35 pm GMT+5:30","Selin Abraham","selinabraham1@gmail.com","Fifth Semester"
+"2026/04/13 5:06:38 pm GMT+5:30","Bhama Raju","bhamaraju5@gmail.com","Fifth Semester"
+"2026/04/13 5:06:58 pm GMT+5:30","Ningappa ","ningubunna@gmail.com","Third Semester"
+"2026/04/13 5:07:00 pm GMT+5:30","Rojy p roy ","rojyproy98@gmail.com","Third Semester"
+"2026/04/13 5:07:02 pm GMT+5:30","SHARON P S","sharonps8604@gmail.com","Seventh Semester"
+"2026/04/13 5:07:09 pm GMT+5:30","Abhirami.m","mabhirami633@gmail.com","Seventh Semester"
+"2026/04/13 5:07:11 pm GMT+5:30","Amrutha Shibu ","amruthashibu48@gmail.com","Fifth Semester"
+"2026/04/13 5:07:24 pm GMT+5:30","Akhilesh B","akhileshbinu82@gmail.com","Fifth Semester"
+"2026/04/13 5:07:47 pm GMT+5:30","Rithul krishna M","rithulkrishnam708@gmail.com","Third Semester"
+"2026/04/13 5:07:51 pm GMT+5:30","Rojy p roy ","rojyproy98@gmail.com","Third Semester"
+"2026/04/13 5:10:32 pm GMT+5:30","Anosha S","anoshaparu@gmail.com","Third Semester"
+"2026/04/13 5:10:45 pm GMT+5:30","Joshna ps","joshnasebastian85@gmail.com","Fifth Semester"
+"2026/04/13 5:11:59 pm GMT+5:30","Aadil Jaleel","aadiljaleel70@gmail.com","Fifth Semester"
+"2026/04/13 5:13:30 pm GMT+5:30","Aleena Elza saji ","lissysaji95@gmail.com","Seventh Semester"
+"2026/04/13 5:13:33 pm GMT+5:30","Maria Binoy","mariyabinoy48@gmail.com","Third Semester"
+"2026/04/13 5:13:46 pm GMT+5:30","Sushanth.N","sushanthnsushanthn03@gmail.com","Third Semester"
+"2026/04/13 5:13:50 pm GMT+5:30","Sona EJ ","Sonaej104@gmail.com","Fifth Semester"
+"2026/04/13 5:14:02 pm GMT+5:30","Kamala.n","kamalan006@gmail.com","Third Semester"
+"2026/04/13 5:15:57 pm GMT+5:30","CHRISTINA ROSE","christinarose1409@gmail.com","Third Semester"
+"2026/04/13 5:16:14 pm GMT+5:30","Athulya.s","athulyasaji76@gmail.com","Third Semester"
+"2026/04/13 5:16:42 pm GMT+5:30","Roshini Elsa Thomas ","elsathomasroshini@gmail.com ","Third Semester"
+"2026/04/13 5:16:43 pm GMT+5:30","Anandhu Satheesh ","anandhusatheesh518@gmail.com","Third Semester"
+"2026/04/13 5:17:51 pm GMT+5:30","Anandhu Satheesh ","anandhusatheesh518@gmail.com","Third Semester"
+"2026/04/13 5:18:03 pm GMT+5:30","Monika. S","monikamonika1772@gmail.com","Third Semester"
+"2026/04/13 5:18:30 pm GMT+5:30","Nandana.S ","s9246348@gmail.com ","Third Semester"
+"2026/04/13 5:19:07 pm GMT+5:30","Nishana.N","nishananishanan259@gmail.com","Fifth Semester"
+"2026/04/13 5:19:32 pm GMT+5:30","Annasaji ","annasaji418@gmail.com","Fifth Semester"
+"2026/04/13 5:20:28 pm GMT+5:30","Lena Varghese ","lenavarghese004@gmail.com","Seventh Semester"
+"2026/04/13 5:20:48 pm GMT+5:30","Manav","mjmanav37@gmail.com","Third Semester"
+"2026/04/13 5:20:53 pm GMT+5:30","Neha Susan Thomas ","nehathomas2004@gmail.com","Seventh Semester"
+"2026/04/13 5:21:36 pm GMT+5:30","Ancy koshy ","ancykoshy2006@gamil.com","Third Semester"
+"2026/04/13 5:21:39 pm GMT+5:30","Anjana Mathews ","anjanamathews13@gmail.Com","Seventh Semester"
+"2026/04/13 5:21:59 pm GMT+5:30","Ashwin k m","ashwinkmkunji@gmail.com","Fifth Semester"
+"2026/04/13 5:22:05 pm GMT+5:30","Dawn Dennis","dawndennis07@gmail.com","Seventh Semester"
+"2026/04/13 5:22:38 pm GMT+5:30","Bharath. N. P","prabhakarpradeep5@gmail.com","Fifth Semester"
+"2026/04/13 5:23:00 pm GMT+5:30","Ajeena siju","ajeenasiju@gmail.com","Fifth Semester"
+"2026/04/13 5:23:01 pm GMT+5:30","SaluMol Shaji ","salumolshaji2004@gmail.com","Fifth Semester"
+"2026/04/13 5:24:12 pm GMT+5:30","Rija Roy","rijaroy04@gmail.com","Seventh Semester"
+"2026/04/13 5:24:17 pm GMT+5:30","Neeraja P S","Neerajaps195@gmail.com","Fifth Semester"
+"2026/04/13 5:24:21 pm GMT+5:30","Riya Roy","rijariya18@gamil.com","Seventh Semester"
+"2026/04/13 5:25:05 pm GMT+5:30","Albin Aniyankunju ","albinak457a@gmail.com","Third Semester"
+"2026/04/13 5:25:19 pm GMT+5:30","Nyjil chandy ","nyjilchandy5@gmail.com","Seventh Semester"
+"2026/04/13 5:25:27 pm GMT+5:30","Jismon George ","jisgeorge2005@gmail.com ","Fifth Semester"
+"2026/04/13 5:25:27 pm GMT+5:30","Josna Jomon ","josnazz4333@gmail.com","Third Semester"
+"2026/04/13 5:25:29 pm GMT+5:30","SANIYA SAIMON","saniyasaimon@gmail.com","Third Semester"
+"2026/04/13 5:25:36 pm GMT+5:30","Rohini L","r4472527@gmail.com","Fifth Semester"
+"2026/04/13 5:25:45 pm GMT+5:30","Kevin Reji","Rejikevin66@gmail.com","Fifth Semester"
+"2026/04/13 5:26:04 pm GMT+5:30","Monika.S","monikamonika1772agmail.com","Third Semester"
+"2026/04/13 5:26:10 pm GMT+5:30","NIRMALA GUDDENNAVAR ","nirmalagudennavar@gmail.com","Third Semester"
+"2026/04/13 5:26:48 pm GMT+5:30","Nirmala Guddennavar ","nirmalagudennavar@gmail.com","Third Semester"
+"2026/04/13 5:27:41 pm GMT+5:30","Ashna.A","ashnaanoob123@gmail.com","Seventh Semester"
+"2026/04/13 5:29:06 pm GMT+5:30","Priya.D","priyadhalldon@gmail.com","Fifth Semester"
+"2026/04/13 5:29:35 pm GMT+5:30","Priya.D","priyadhalldon@gmail.com","Fifth Semester"
+"2026/04/13 5:30:26 pm GMT+5:30","Ajith Antony Dixon ","ajithantonydixon@gmail.com","Seventh Semester"
+"2026/04/13 5:31:44 pm GMT+5:30","Ajith Jimmon","ajithjimmon@gmail.com","Fifth Semester"
+"2026/04/13 5:35:33 pm GMT+5:30","Basil Alias","basilalias2006@gmail.com","Third Semester"
+"2026/04/13 5:36:19 pm GMT+5:30","Anjana Rajan","anjanar603@gmail.com","Fifth Semester"
+"2026/04/13 5:37:24 pm GMT+5:30","Pavithra Udayan ","pavipavithraparu@gmail.com","Fifth Semester"
+"2026/04/13 5:37:53 pm GMT+5:30","Drisya E","drisyae2006@gmail.com","Third Semester"
+"2026/04/13 5:38:46 pm GMT+5:30","Aromal NM","Aromal. Alish@gmail.com","Fifth Semester"
+"2026/04/13 5:38:50 pm GMT+5:30","Dani thomas ","daniputhuparambil@gmail.com","Third Semester"
+"2026/04/13 5:39:39 pm GMT+5:30","ABHIRAMI K U","abhiramiku11g2021@gmail.com","Fifth Semester"
+"2026/04/13 5:40:48 pm GMT+5:30","Anunanda k","anunandapreman@gmail.com","Third Semester"
+"2026/04/13 5:40:58 pm GMT+5:30","Sivakamibiju ","Sivakamikavya@gmail.com","Third Semester"
+"2026/04/13 5:41:22 pm GMT+5:30","Jennifer James ","jenniferjamesvj@gmail.com","Third Semester"
+"2026/04/13 5:41:32 pm GMT+5:30","Diya Chandy ","diyachandy981@gmail.com","Third Semester"
+"2026/04/13 5:42:55 pm GMT+5:30","Drishyamol M.R","drishyamolmr@gmail.com","Third Semester"
+"2026/04/13 5:44:56 pm GMT+5:30","Swathika N.V","swathikaswathi753@gmail.com","Third Semester"
+"2026/04/13 5:45:09 pm GMT+5:30","Aswathy s s","aswathysajeev2005@gmail.com","Fifth Semester"
+"2026/04/13 5:46:45 pm GMT+5:30","Tito Thomas ","titothomas2006@gmail.com","Third Semester"
+"2026/04/13 5:47:41 pm GMT+5:30","Meenakshi. S. Shiju","meenakshishiju978@gmail.com","Fifth Semester"
+"2026/04/13 5:49:27 pm GMT+5:30","Sijo Thomas joy ","Sijojoy059@gmail.com","Fifth Semester"
+"2026/04/13 5:49:54 pm GMT+5:30","Arjun manoj ","arjunmanoj149@gmail.com","Third Semester"
+"2026/04/13 5:52:33 pm GMT+5:30","Elizabeth Merlin Varughese ","melizabeth1994@yahoo.com","Seventh Semester"
+"2026/04/13 5:53:00 pm GMT+5:30","Safavn pm","Safvanpm33@gmail.com","Seventh Semester"
+"2026/04/13 5:53:27 pm GMT+5:30","Keerthana Babu ","keerthanababu686@gmail.com","Fifth Semester"
+"2026/04/13 5:53:43 pm GMT+5:30","Neha Shaji","nehashaji273@gmail.com","Fifth Semester"
+"2026/04/13 5:57:24 pm GMT+5:30","Abiyamol Simson ","abiyasimson8568@gmail.com","Third Semester"
+"2026/04/13 5:57:50 pm GMT+5:30","Aleena Elza Saji ","lissysaji95@gmail.com","Seventh Semester"
+"2026/04/13 6:02:08 pm GMT+5:30","Binitta susan ninu ","binittasusan@gmail.com","Seventh Semester"
+"2026/04/13 6:02:15 pm GMT+5:30","Abhijitha krishnakumar ","acabhijitha@gmail.com","Seventh Semester"
+"2026/04/13 6:03:59 pm GMT+5:30","Ginto Gressian ","gressianginto@gmail.com","Fifth Semester"
+"2026/04/13 6:07:54 pm GMT+5:30","Sony johnson ","@sojosony321@gmail.com","Seventh Semester"
+"2026/04/13 6:08:21 pm GMT+5:30","Jiji Lukose ","jijilukose6@gmail.com","Fifth Semester"
+"2026/04/13 6:08:58 pm GMT+5:30","Jiji Lukose ","jijilukose6@gmail.com","Fifth Semester"
+"2026/04/13 6:09:28 pm GMT+5:30","Teena Johnson ","Johnsonteena3@gamil.com","Seventh Semester"
+"2026/04/13 6:09:57 pm GMT+5:30","Teena Johnson ","Johnsonteena3@gamil.com","Seventh Semester"
+"2026/04/13 6:10:11 pm GMT+5:30","Adithyan. G","Adithyanappugokulam@gmail.com","Fifth Semester"
+"2026/04/13 6:10:25 pm GMT+5:30","Beeya Raju","beeyaraju385@gmail.com","Seventh Semester"
+"2026/04/13 6:13:32 pm GMT+5:30","Dona mol jaison","donajaison020@gmail.com","Third Semester"
+"2026/04/13 6:14:33 pm GMT+5:30","Rojy p roy ","rojyproy98@gmail.com","Third Semester"
+"2026/04/13 6:14:55 pm GMT+5:30","Ajuna joby","jobyajuna@gmail.com","Third Semester"
+"2026/04/13 6:15:35 pm GMT+5:30","Antony Tojo ","antonytojo2005@gmail.com","Third Semester"
+"2026/04/13 6:15:35 pm GMT+5:30","Ajuna joby","jobyajuna@gmail.com","Third Semester"
+"2026/04/13 6:15:52 pm GMT+5:30","Amrutha Murali ","mamrutha730@gmail.com","Fifth Semester"
+"2026/04/13 6:17:46 pm GMT+5:30","SUMEET SHINDE ","sumeetshinde429@gmail.com","Third Semester"
+"2026/04/13 6:19:06 pm GMT+5:30","Stefin Sunu ","stefinsunu14@gmail.com","Third Semester"
+"2026/04/13 6:19:12 pm GMT+5:30","Alakananda .S","alakaalakananda9@gmail.com","Fifth Semester"
+"2026/04/13 6:19:46 pm GMT+5:30","Basil Benil ","basilbenil998@gmail.com","Third Semester"
+"2026/04/13 6:20:33 pm GMT+5:30","HARISH MR","harishharish4795@gmail.com","Fifth Semester"
+"2026/04/13 6:21:04 pm GMT+5:30","Monik Betson ","monikbetson13@gmail.com","Seventh Semester"
+"2026/04/13 6:22:24 pm GMT+5:30","Neharin p a ","Neharipa123@gmail.com","Third Semester"
+"2026/04/13 6:23:35 pm GMT+5:30","CHRISTINA ROSE","christinarose1409@gmail.com","Third Semester"
+"2026/04/13 6:25:29 pm GMT+5:30","Athira Remesh ","athirar635@gmail.com","Fifth Semester"
+"2026/04/13 6:25:40 pm GMT+5:30","BENSON TF","bensontf9@gmail.com","Fifth Semester"
+"2026/04/13 6:25:46 pm GMT+5:30","Muhammad Kaif ","mhdkaifk86@gmail.com","Third Semester"
+"2026/04/13 6:26:06 pm GMT+5:30","Devipriya.j","dp387875@gmail.com","Fifth Semester"
+"2026/04/13 6:26:58 pm GMT+5:30","Sinto Sojan ","sintosojan24@gmail.com","Fifth Semester"
+"2026/04/13 6:27:01 pm GMT+5:30","Rachna ","Rachnakamlapure82@gmail.com","Seventh Semester"
+"2026/04/13 6:27:37 pm GMT+5:30","Abel joby ","jobyabel3@gmail.com","Third Semester"
+"2026/04/13 6:28:17 pm GMT+5:30","Amitha V ","amithaabh3@gmail.com","First Semester"
+"2026/04/13 6:28:19 pm GMT+5:30","Tessa varghese","tessavarghese744@gmail.com","First Semester"
+"2026/04/13 6:28:22 pm GMT+5:30","Akshara Ajesh","aksharaajesh07@gmail.com","First Semester"
+"2026/04/13 6:28:32 pm GMT+5:30","Adith jayaprakash ","Adithjp18@gmail.com","First Semester"
+"2026/04/13 6:28:32 pm GMT+5:30","Vaiga vimal","vaigavimal93@gmail.com","First Semester"
+"2026/04/13 6:28:40 pm GMT+5:30","Muhammed muaad kk","muaadkkmuhammed@gmail.com","First Semester"
+"2026/04/13 6:28:40 pm GMT+5:30","Krishna ks","Krishnaaks8765@gmail.com","First Semester"
+"2026/04/13 6:28:41 pm GMT+5:30","Sreesanth.s","sreesanthsree539@gmail.com","First Semester"
+"2026/04/13 6:28:45 pm GMT+5:30","Nimish Anil","nimish6300@gmail.com","First Semester"
+"2026/04/13 6:28:53 pm GMT+5:30","Anju Alex","anjualex9895@gmail.com","First Semester"
+"2026/04/13 6:28:54 pm GMT+5:30","Bismitha vs","bismithavs72@gmail.com","First Semester"
+"2026/04/13 6:28:56 pm GMT+5:30","JESSWIN MATHEW ","jeswinm23@gmail.com","First Semester"
+"2026/04/13 6:29:00 pm GMT+5:30","Vaiga vimal ","vaigavimal93@gmail.com","First Semester"
+"2026/04/13 6:29:14 pm GMT+5:30","ATHIRA ANEESH ","athiraaneesh8113@gmail.com","First Semester"
+"2026/04/13 6:29:16 pm GMT+5:30","Emmanuel Biju Edwin ","emmanuelbiju85@gmail.com","First Semester"
+"2026/04/13 6:29:18 pm GMT+5:30","Biyona Sajii","biyonasaji22@gmail.com","Seventh Semester"
+"2026/04/13 6:29:40 pm GMT+5:30","Reeba p.b","reebabinu10@gmail.com","First Semester"
+"2026/04/13 6:29:44 pm GMT+5:30","Sujitha john ","Sujuthajohn2312","First Semester"
+"2026/04/13 6:29:51 pm GMT+5:30","Sivada N.B","sivadasivadasivada138@gmail.com","First Semester"
+"2026/04/13 6:29:53 pm GMT+5:30","Herisan","herisananthony@gmail.com","First Semester"
+"2026/04/13 6:29:58 pm GMT+5:30","SAYED SHAMIL JIFFRY","Shamiljiffry867@gmail.com","First Semester"
+"2026/04/13 6:29:59 pm GMT+5:30","Anto Shiju","antoshiju447@gmail.com","First Semester"
+"2026/04/13 6:30:09 pm GMT+5:30","Gayathri Sunil ","gayathrisunil470@gmail.com","First Semester"
+"2026/04/13 6:30:18 pm GMT+5:30","Nadiya bijoy ","nadiyabijoy249@gmail.com","First Semester"
+"2026/04/13 6:30:19 pm GMT+5:30","Afin savio ","afinsavio01@gmail.com","First Semester"
+"2026/04/13 6:30:25 pm GMT+5:30","Areena Sunil","areenasunil@gmail.com","First Semester"
+"2026/04/13 6:30:27 pm GMT+5:30","Sraya Manjosh","srayamanjosh050123@gmail.com","First Semester"
+"2026/04/13 6:30:29 pm GMT+5:30","Elena Joby ","elenajoby62@gmail.com","First Semester"
+"2026/04/13 6:30:32 pm GMT+5:30","Gowthami D A ","gowthamida99023@gmail.com","First Semester"
+"2026/04/13 6:30:38 pm GMT+5:30","Aiswarya R ","aiswaryapushpan2008@gmail.com","First Semester"
+"2026/04/13 6:30:40 pm GMT+5:30","Herisan.A","herisananthony@gmail.com","First Semester"
+"2026/04/13 6:30:42 pm GMT+5:30","Sujitha john ","Sujithajohn2312","First Semester"
+"2026/04/13 6:30:50 pm GMT+5:30","Aleesha Saji ","aleesha29072005@gmail.com","First Semester"
+"2026/04/13 6:30:56 pm GMT+5:30","Vaiga vimal ","vaigavimal93@gmail.com","First Semester"
+"2026/04/13 6:31:08 pm GMT+5:30","Nandana.S ","s9246348@gmail.com ","Third Semester"
+"2026/04/13 6:31:10 pm GMT+5:30","Anamika R","anu303129@gmail.com","First Semester"
+"2026/04/13 6:31:45 pm GMT+5:30","Nayana Rajesh ","nayanakochu2007@gmail.com","First Semester"
+"2026/04/13 6:31:47 pm GMT+5:30","Anamika R","anu303129@gmail.com","First Semester"
+"2026/04/13 6:32:00 pm GMT+5:30","Blessy. R","blessy11r@gamil.com","First Semester"
+"2026/04/13 6:32:23 pm GMT+5:30","Aleena Ani","aleenaani44@gmail.com","First Semester"
+"2026/04/13 6:32:37 pm GMT+5:30","Sayona C Binu","sayonacbinu4@gmail.com","First Semester"
+"2026/04/13 6:33:05 pm GMT+5:30","Bindhuja biju ","bindhujab531@gmail.com","Fifth Semester"
+"2026/04/13 6:33:05 pm GMT+5:30","Anjaly Nair","anjalynair2006@gmail.com","First Semester"
+"2026/04/13 6:33:42 pm GMT+5:30","Alen Roy","alenroy632@gmail.com","First Semester"
+"2026/04/13 6:33:51 pm GMT+5:30","Aleena Abraham ","aleenaabraham059@gmail.com","First Semester"
+"2026/04/13 6:34:01 pm GMT+5:30","Nair Neethu Nirdoshkumar ","neethunair254@gmail.com","First Semester"
+"2026/04/13 6:34:20 pm GMT+5:30","SRUTHY S NAIR","sruthi858995@gmail. Com","First Semester"
+"2026/04/13 6:34:21 pm GMT+5:30","CHITHIRA M B ","mbchithira8@gmail.com","Fifth Semester"
+"2026/04/13 6:34:32 pm GMT+5:30","Ashna shaju","aashnashaju85@gmail.com","Fifth Semester"
+"2026/04/13 6:34:39 pm GMT+5:30","Anna Biju ","bijuanna446@gmail.com","First Semester"
+"2026/04/13 6:36:58 pm GMT+5:30","Sneha.S","snehasukhil371@gmail.com","First Semester"
+"2026/04/13 6:37:18 pm GMT+5:30","Deena s edwin ","deenasedwin38@gamil.Com ","Third Semester"
+"2026/04/13 6:38:08 pm GMT+5:30","Vijayalaxmi chandulal ","vijayalaxmic25@gmail.com","First Semester"
+"2026/04/13 6:38:12 pm GMT+5:30","Raamraj R","raamrajr4@gmail.com","Third Semester"
+"2026/04/13 6:38:20 pm GMT+5:30","Saniyamol sabu","Saniyamolsabu856@gmail","Fifth Semester"
+"2026/04/13 6:38:45 pm GMT+5:30","Riya Fathima T.A","riyaaafathimaresheed@gmail.com","First Semester"
+"2026/04/13 6:39:06 pm GMT+5:30","Annmiya sunil ","anniejose 721@gamil.com","First Semester"
+"2026/04/13 6:39:26 pm GMT+5:30","Anjana Pradeep ","pradeepanjana.2007@gmail.com","First Semester"
+"2026/04/13 6:39:43 pm GMT+5:30","Maria shibu","mariashibu2006@gmail.com","Third Semester"
+"2026/04/13 6:40:18 pm GMT+5:30","Bharathraj.B","bharathraj1532007@gmail.com","First Semester"
+"2026/04/13 6:40:36 pm GMT+5:30","Devatheertha. M","devatheertham216@gmail.com","Fifth Semester"
+"2026/04/13 6:42:31 pm GMT+5:30","Neeraja P S","Neerajaps195@gmail.com","Fifth Semester"
+"2026/04/13 6:43:01 pm GMT+5:30","Keerthana.M","Keerthana 9049@gmail.Com","First Semester"
+"2026/04/13 6:43:45 pm GMT+5:30","Aswathy k Babu ","aswathy8000@gmail.com","Seventh Semester"
+"2026/04/13 6:43:47 pm GMT+5:30","Jobitha Joseph ","jobithajoseph8@gmail.com","First Semester"
+"2026/04/13 6:44:17 pm GMT+5:30","Anagha S A","Anaghaammu5059@gmail.com","Third Semester"
+"2026/04/13 6:44:34 pm GMT+5:30","Anit Maria Denny ","anitmariad@gmail.com ","First Semester"
+"2026/04/13 6:45:30 pm GMT+5:30","Sandramol.S","sandrasathyan906@gmail.com","Seventh Semester"
+"2026/04/13 6:45:38 pm GMT+5:30","Mahima baiju ","mahimab878@gmail.com","Seventh Semester"
+"2026/04/13 6:45:58 pm GMT+5:30","Keerthi R Nair ","keerthikichu92@gmail.com","Fifth Semester"
+"2026/04/13 6:46:00 pm GMT+5:30","Prayana P ","prayanasreekutty@gmail.com","Seventh Semester"
+"2026/04/13 6:46:10 pm GMT+5:30","Savio Sathyan ","saviosathyan10@gmail.com","First Semester"
+"2026/04/13 6:46:42 pm GMT+5:30","Anunandha k","anuua3594@gmail.com","First Semester"
+"2026/04/13 6:48:32 pm GMT+5:30","Ambadi cs","ambadysudheer564@gmail.com","Seventh Semester"
+"2026/04/13 6:49:37 pm GMT+5:30","Amal","appu3820@gmail.com","Third Semester"
+"2026/04/13 6:50:26 pm GMT+5:30","Gayal George ","gayalgeorge46@gmail.com","Third Semester"
+"2026/04/13 6:51:25 pm GMT+5:30","Nayan nj","nayanjoby69@gmail.com","First Semester"
+"2026/04/13 6:52:53 pm GMT+5:30","Alen Jose","alenjose212007@gmail.com","First Semester"
+"2026/04/13 6:53:58 pm GMT+5:30","Albin S","albinayush001@gmail.com","First Semester"
+"2026/04/13 6:57:17 pm GMT+5:30","Christina S ","Christinaschristina@79","First Semester"
+"2026/04/13 6:57:48 pm GMT+5:30","Sona Mariyam Siby","ssiby443@gmail.com","First Semester"
+"2026/04/13 6:57:59 pm GMT+5:30","KASYAP SARANG","kasyapsarang1@gmail.com","Third Semester"
+"2026/04/13 6:58:08 pm GMT+5:30","Anjana shaji","anjanashajikk1000@gmail.com","Fifth Semester"
+"2026/04/13 6:58:44 pm GMT+5:30","Don saji","Sajimathew8979@gmail.com","First Semester"
+"2026/04/13 6:58:45 pm GMT+5:30","Shyno Mariyam Shaji ","shajishynomariyam@gmail.com","Fifth Semester"
+"2026/04/13 6:59:03 pm GMT+5:30","Christina S ","Christinaschristina@79","First Semester"
+"2026/04/13 6:59:46 pm GMT+5:30","Manoudhara.m","manoudharam@gmail.com","First Semester"
+"2026/04/13 7:00:06 pm GMT+5:30","Shermi davood ","Shermidavood@gmail.com","Fifth Semester"
+"2026/04/13 7:01:01 pm GMT+5:30","Shermidavood ","Shermidavood@gmail.com","Fifth Semester"
+"2026/04/13 7:01:28 pm GMT+5:30","Sadhana.s","Shivasadhana4127@gamil .com","First Semester"
+"2026/04/13 7:02:16 pm GMT+5:30","Jis maria sunny ","jismariasunny30@gmail.com","First Semester"
+"2026/04/13 7:07:45 pm GMT+5:30","Dani thomas ","daniputhuparambil@gmail.com","Third Semester"
+"2026/04/13 7:08:01 pm GMT+5:30","Jyotish kumar s","jyotishs2005@gmail.com","Third Semester"
+"2026/04/13 7:10:18 pm GMT+5:30","Bibin L Johnson","bibinljohnson8089@gmail.com","Third Semester"
+"2026/04/13 7:10:35 pm GMT+5:30","Adithyan S Santhosh ","adithyanssanthosh8@gmail.com","Fifth Semester"
+"2026/04/13 7:11:32 pm GMT+5:30","Disha D","shithild2002@gmail.com","Fifth Semester"
+"2026/04/13 7:11:59 pm GMT+5:30","Francis ","Francissuresh401@gmail.com","Third Semester"
+"2026/04/13 7:13:04 pm GMT+5:30","Feba biju","Febab451@gmail.com","First Semester"
+"2026/04/13 7:13:12 pm GMT+5:30","Ranjita gudadannavar","ranjitagudadannavar@gmail.com","Fifth Semester"
+"2026/04/13 7:14:38 pm GMT+5:30","Niya Thomas ","niyathomas486@gmail.com","First Semester"
+"2026/04/13 7:17:40 pm GMT+5:30","Pavithra ajith ","Pavitharaajith42@gmail. com","Third Semester"
+"2026/04/13 7:18:23 pm GMT+5:30","Krishnajith V S","krishnajithvs28@gmail.com","First Semester"
+"2026/04/13 7:19:33 pm GMT+5:30","Jiss John Joseph ","koodathiljissjohn@gmail.com","First Semester"
+"2026/04/13 7:19:54 pm GMT+5:30","Aldrin Baiju","Aldrinbaiju60@gmail.com","First Semester"
+"2026/04/13 7:22:20 pm GMT+5:30","Akhila Remesh","bindhuramesh08@gmail.com","First Semester"
+"2026/04/13 7:25:09 pm GMT+5:30","Mathachan s kurian ","Mathachanskurian@gmail.com ","First Semester"
+"2026/04/13 7:25:28 pm GMT+5:30","Sandra mol ks ","sandramolks86@gmail.com","Third Semester"
+"2026/04/13 7:25:32 pm GMT+5:30","Sanjay Lal AS ","s73316540@gmail.com","First Semester"
+"2026/04/13 7:25:41 pm GMT+5:30","Fahad N","fahadnajeeb111@gmail.com","First Semester"
+"2026/04/13 7:26:00 pm GMT+5:30","Jeya biju ","jeyamol123@gmail.com","First Semester"
+"2026/04/13 7:26:14 pm GMT+5:30","Jisha P.R","jishajisha212@gmail.com","Seventh Semester"
+"2026/04/13 7:26:16 pm GMT+5:30","Aaran David Anil ","adrinanil00@gmail.com","Fifth Semester"
+"2026/04/13 7:32:55 pm GMT+5:30","Athulya v.m","athulyavm7001@gmail.com","First Semester"
+"2026/04/13 7:40:11 pm GMT+5:30","ALEENA TREESA BIJU","aleenatreesab@gmail.com","Fifth Semester"
+"2026/04/13 7:40:48 pm GMT+5:30","Vyasan kv","vyasan kv@gmail.com","Third Semester"
+"2026/04/13 7:41:56 pm GMT+5:30","Vyasan kv","vyasankv5@gmail.com","Third Semester"
+"2026/04/13 7:42:37 pm GMT+5:30","Aleena.P.S","aleenaprasad19@gmail.com","Fifth Semester"
+"2026/04/13 7:51:09 pm GMT+5:30","Jefrin Varghese ","jefrinvarghese655@gmail.com","Third Semester"
+"2026/04/13 7:51:45 pm GMT+5:30","Jefrin Varghese ","jefrinvarghese655@gmail.com","Third Semester"
+"2026/04/13 7:52:06 pm GMT+5:30","Akash.S","sakash78383@gmail.com","Fifth Semester"
+"2026/04/13 7:56:28 pm GMT+5:30","ASIN RAJ T","asinraj431@gmail.com","Third Semester"
+"2026/04/13 7:56:34 pm GMT+5:30","Mohammed Aslam ","mohammedaslam7988@gmail.com","First Semester"
+"2026/04/13 7:58:29 pm GMT+5:30","Nandu K S","nandusuresh017@gmail.com","Seventh Semester"
+"2026/04/13 7:59:36 pm GMT+5:30","Abhijith Reghu","abhijithreghu575@gmail.com","First Semester"
+"2026/04/13 8:00:20 pm GMT+5:30","Abhijith Reghu","abhijithreghu575@gmail.com","First Semester"
+"2026/04/13 8:02:46 pm GMT+5:30","Jefrin Varghese ","jefrinvarghese655@gmail.com","Third Semester"
+"2026/04/13 8:04:29 pm GMT+5:30","Ambadi Omanakuttan ","ambadiomanakuttan230@gmail.com","First Semester"
+"2026/04/13 8:07:54 pm GMT+5:30","Kousthub R Nair","kousthubrnair246@gmail.com","Fifth Semester"
+"2026/04/13 8:23:18 pm GMT+5:30","Sreelekshmi p k","sreelekshmi7865@gmail.com","Seventh Semester"
+"2026/04/13 8:29:28 pm GMT+5:30","Medona M ","medonamuthayya2007@gmail.com","First Semester"
+"2026/04/13 8:31:00 pm GMT+5:30","Nobin lal ","nobinlal47@gmail.com","Third Semester"
+"2026/04/13 8:31:46 pm GMT+5:30","Nobin lal ","nobinlal47@gmail.com","Third Semester"
+"2026/04/13 8:41:03 pm GMT+5:30","Aleema Parvin","aleemappoo@gmail.com","First Semester"
+"2026/04/13 8:41:17 pm GMT+5:30","RENIN K RAJU ","Reninkraju06@gmail.com","Fifth Semester"
+"2026/04/13 8:43:10 pm GMT+5:30","Preetham D ","naikdinesh422@gmail.com","Third Semester"
+"2026/04/13 8:49:27 pm GMT+5:30","Abiya chinnu aji ","abiyaaji7@gmail.com ","Third Semester"
+"2026/04/13 8:51:52 pm GMT+5:30","Kavya DB ","Kavyabandivaddar08@gmail. Cv om","Third Semester"
+"2026/04/13 8:56:50 pm GMT+5:30","Riya Eldhose ","riyaeldhose62@gmail.com","First Semester"
+"2026/04/13 9:19:05 pm GMT+5:30","Preetham D ","naikdinesh422@gmail.com","Fifth Semester"
+"2026/04/13 9:37:54 pm GMT+5:30","Fevin","fevincj772@gmail.com","First Semester"
+"2026/04/13 9:56:44 pm GMT+5:30","Jinu maria E. J","Jinumariaej@gmail.com","First Semester"
+"2026/04/13 10:22:29 pm GMT+5:30","Athul Kumar k","athulkumar543@gmail.com","Third Semester"
+"2026/04/13 10:52:47 pm GMT+5:30","Abhijith Biju ","4bhijithbiju@gmail.com","First Semester"
+"2026/04/13 11:39:16 pm GMT+5:30","Anaani S Alexander","anaanijohaan@gmail.com","First Semester"
+"2026/04/14 12:38:56 am GMT+5:30","Muhammad sinan ","@sinanmeethalevayatt@gmail.com","Third Semester"
+"2026/04/14 6:46:00 am GMT+5:30","Bhanupriya P Shibu ","bhanuzpriya01@gmail.com ","First Semester"
+"2026/04/14 7:46:03 am GMT+5:30","Siljin V Sajan","siljinsajan4@gmail.com","First Semester"
+"2026/04/14 8:27:12 am GMT+5:30","Chrissmon T R ","chrizreji53@gmail.ckm","Seventh Semester"
+"2026/04/14 2:37:57 pm GMT+5:30","Kebin T Xavier","kebintxavier14@gmail.com","First Semester"
+"2026/04/14 2:45:39 pm GMT+5:30","Arya ms","kunjubscn06@gamil.com","Seventh Semester"
+"2026/04/14 2:47:11 pm GMT+5:30","Arya ms","kunjuvscn06@gamil.com","Seventh Semester"
+"2026/04/14 2:47:18 pm GMT+5:30","Tessmary Thomson ","tessthomson143@gmail.com","Seventh Semester"
+"2026/04/14 2:51:57 pm GMT+5:30","Mahima baiju ","mahimab878@gmail.com","Seventh Semester"
+"2026/04/14 3:04:31 pm GMT+5:30","Athul japhet","athuljaphet7@gmail.com","Seventh Semester"
+"2026/04/14 3:05:09 pm GMT+5:30","Francis joyson ","francisjoyson3@gmail.com","Seventh Semester"
+"2026/04/14 3:33:36 pm GMT+5:30","Elizabeth Sebastian ","elizabethsebastian1997@gmail.com","Seventh Semester"
+"2026/04/14 3:36:47 pm GMT+5:30","Viswajith mt ","viswajithmadambi2004@gmail.com","Seventh Semester"
+"2026/04/14 3:50:40 pm GMT+5:30","Sony johnson ","@sojosony321@gmail.com","Seventh Semester"
+"2026/04/14 3:56:53 pm GMT+5:30","Sreelekshmi p.k","sreelekshmi7865@gmail.com","Seventh Semester"
+"2026/04/14 5:35:36 pm GMT+5:30","Anju ks","anjuks1112005@gmail.com","Seventh Semester"
+"2026/04/14 5:49:05 pm GMT+5:30","Gopika g nair","gopikagnair6633@gmail.com","Seventh Semester"
+"2026/04/15 1:04:29 pm GMT+5:30","Ancy Mary Joby","Jobyancy885@gamil.com","Seventh Semester"
+"2026/04/15 1:04:46 pm GMT+5:30","Shubham vyas","vyashubhamm@gmail.com","Seventh Semester"
+"2026/04/15 1:05:28 pm GMT+5:30","Basil Alias","basilalias2006@gmail.com","Third Semester"
+"2026/04/15 1:06:38 pm GMT+5:30","Rithul Krishna M ","rithulkrishnam708@gmail.com","Third Semester"
+"2026/04/15 1:07:04 pm GMT+5:30","Krishnajith V S","krishnajithvs28@gmail.com","First Semester"
+"2026/04/15 1:07:19 pm GMT+5:30","Anto Shiju","antoshiju447@gmail.com","First Semester"
+"2026/04/15 1:08:19 pm GMT+5:30","Annexteena Pauly ","annexteenapauly01102@gmail.com","Fifth Semester"
+"2026/04/15 1:12:08 pm GMT+5:30","Bismitha vs ","bismithavs72@gmail.com","First Semester"
+"2026/04/15 1:14:11 pm GMT+5:30","Krishnendhu rajesh ","teslatoa@gmail.com","Third Semester"
+"2026/04/15 1:14:15 pm GMT+5:30","Anna sibichan ","sibichananna@gmail.com","First Semester"
+"2026/04/15 1:17:04 pm GMT+5:30","Nadiya Bijoy ","nadiyabijoy249@gmail.com","First Semester"
+"2026/04/15 1:17:11 pm GMT+5:30","NESHVA","neshva62@gmail.com","First Semester"
+"2026/04/15 1:17:45 pm GMT+5:30","NESHVA","neshva62@gmail.com","First Semester"
+"2026/04/15 1:21:25 pm GMT+5:30","Helan simi john ","helanj745@gmail.com","First Semester"
+"2026/04/15 1:21:55 pm GMT+5:30","Ranjita gudadannavar","ranjitagudadannavar@gmail.com","Fifth Semester"
+"2026/04/15 1:22:30 pm GMT+5:30","Sandramol.S","sandrasathyan906@gmail.com","Seventh Semester"
+"2026/04/15 1:22:46 pm GMT+5:30","Francis joyson ","francisjoyson3@gmail.com","Seventh Semester"
+"2026/04/15 1:35:52 pm GMT+5:30","Kavya Duragappa bandivaddar ","Kavyabandivaddar08@gmail.com","Third Semester"
+"2026/04/15 1:52:16 pm GMT+5:30","Bibin L Johnson","bibinljohnson8089@gmail.com","Third Semester"
+"2026/04/15 2:05:06 pm GMT+5:30","HARISH MR","harishharish4795@gmail.com","Fifth Semester"
+"2026/04/15 2:18:11 pm GMT+5:30","Athira Aneesh ","athiraaneesh8113@gmail.com","First Semester"`;
+
+        // --- USER ACCESS ---
+        // Start with an empty object; CSV students loaded first, then hardcoded users added after
+        const usersData = {};
+
+        function normalizeEmail(email) {
+            let normalized = email.trim().toLowerCase();
+            // Remove leading @ if present (some entries have "@email@gmail.com")
+            if (normalized.startsWith('@')) normalized = normalized.substring(1);
+            // Remove spaces inside the email
+            normalized = normalized.replace(/\s+/g, '');
+            if (!normalized.includes('@')) normalized += '@gmail.com';
+            // Fix common typos
+            normalized = normalized.replace(/@gamil\.com$/i, '@gmail.com')
+                                   .replace(/@gmai\.com$/i, '@gmail.com')
+                                   .replace(/@gmail\.co$/i, '@gmail.com')
+                                   .replace(/@gmail\.con$/i, '@gmail.com')
+                                   .replace(/@gmail\.ckm$/i, '@gmail.com')
+                                   .replace(/@gmail\.c$/i, '@gmail.com')
+                                   .replace(/@gamail\.com$/i, '@gmail.com')
+                                   .replace(/@gmail\.\s*com$/i, '@gmail.com')
+                                   .replace(/@gmail\.\s*cv\s*om$/i, '@gmail.com');
+            return normalized;
+        }
+
+        function getSemesterKey(batchStr) {
+            batchStr = batchStr.toLowerCase();
+            if (batchStr.includes("first")) return "BSc first semester";
+            if (batchStr.includes("third")) return "BSc third semester";
+            if (batchStr.includes("fifth")) return "BSc fifth semester";
+            if (batchStr.includes("seventh")) return "BSc seventh semester";
+            return "";
+        }
+
+        // Proper CSV parser that handles quoted fields correctly
+        function parseCSVLine(line) {
+            const fields = [];
+            let current = '';
+            let inQuotes = false;
+            for (let i = 0; i < line.length; i++) {
+                const ch = line[i];
+                if (inQuotes) {
+                    if (ch === '"') {
+                        if (i + 1 < line.length && line[i + 1] === '"') {
+                            current += '"';
+                            i++; // skip escaped quote
+                        } else {
+                            inQuotes = false;
+                        }
+                    } else {
+                        current += ch;
+                    }
+                } else {
+                    if (ch === '"') {
+                        inQuotes = true;
+                    } else if (ch === ',') {
+                        fields.push(current.trim());
+                        current = '';
+                    } else {
+                        current += ch;
+                    }
+                }
+            }
+            fields.push(current.trim());
+            return fields;
+        }
+
+        function loadUsersFromCSV(csv) {
+            const lines = csv.split('\n');
+            const seenEmails = new Set();
+            
+            for (let i = 1; i < lines.length; i++) {
+                const line = lines[i].trim();
+                if (!line) continue;
+                
+                const fields = parseCSVLine(line);
+                if (fields.length < 4) continue;
+                
+                let name = fields[1].trim();
+                let email = fields[2].trim();
+                let batch = fields[3].trim();
+                
+                email = normalizeEmail(email);
+                
+                // Skip if we've already processed this email (dedup)
+                if (seenEmails.has(email)) continue;
+                seenEmails.add(email);
+                
+                // Extract first name for greeting & password
+                let firstName = name.split(/[\s.]+/)[0].replace(/[^a-zA-Z]/g, '');
+                if (!firstName) firstName = "Student";
+                firstName = firstName.charAt(0).toUpperCase() + firstName.slice(1).toLowerCase();
+                
+                let generatedPass = firstName + "123";
+                let semKey = getSemesterKey(batch);
+                
+                usersData[email] = { name: firstName, pass: generatedPass, role: "student", semester: semKey };
+                
+                // Add to mailing list for faculty
+                if (semKey && semesterEmails[semKey]) {
+                    if (!semesterEmails[semKey].includes(email)) {
+                        semesterEmails[semKey].push(email);
+                    }
+                }
+            }
+        }
+        
+        // Step 1: Load all CSV students
+        loadUsersFromCSV(rawCSVData);
+
+        // Step 2: Add hardcoded users AFTER CSV loading so they cannot be overwritten
+        usersData["minoshvcn@gmail.com"] = { name: "Minosh", pass: "Minosh1987", role: "student" };
+        usersData["dennisvcn@gmail.com"] = { name: "Dennis", pass: "Dennis2026", role: "student" };
+        usersData["onlineclass@jminstitutions.com"] = { name: "Faculty Admin", pass: "jUBILEEM123", role: "faculty" };
+
+        // UI Interactions
+        function togglePasswordVisibility() {
+            const passwordInput = document.getElementById('password');
+            const toggleBtn = document.getElementById('toggle-password-btn');
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                toggleBtn.innerHTML = '&#128584;';
+            } else {
+                passwordInput.type = 'password';
+                toggleBtn.innerHTML = '&#128065;';
+            }
+        }
+
+        // Navigation helpers to toggle visibility between screens
+        function showScreen(screenId) {
+            ['login-screen', 'dashboard-screen', 'course-screen', 'video-screen'].forEach(id => {
+                document.getElementById(id).classList.add('hidden');
+            });
+            document.getElementById(screenId).classList.remove('hidden');
+        }
 
         // Application Initialization
         window.addEventListener('load', () => {
@@ -410,37 +978,104 @@
                 if (localStorage.getItem('isLoggedIn') === 'true') {
                     const savedEmail = localStorage.getItem('userEmail');
                     setGreeting(savedEmail);
+                    setupDashboard(savedEmail);
                     history.replaceState({ page: 'dashboard' }, '', '#dashboard');
                     document.getElementById('dashboard-screen').classList.remove('hidden');
                 } else {
                     history.replaceState({ page: 'login' }, '', '#login');
                     document.getElementById('login-screen').classList.remove('hidden');
                 }
-            }, 3000);
+            }, 3000); 
         });
 
-        // Greeting Logic
+        // Dashboard & Greeting Logic
         function setGreeting(email) {
-            const name = email === "minoshvcn@gmail.com" ? "Minosh" : "Dennis";
-            document.getElementById('user-greeting').innerText = `Welcome ${name},`;
+            const user = usersData[email] || { name: "Student", role: "student" };
+            document.getElementById('user-greeting').innerText = 'Welcome ' + user.name + ',';
+        }
+
+        function getTodayFormatted() {
+            const d = new Date();
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            return d.toLocaleDateString('en-IN', options);
+        }
+
+        function setupDashboard(email) {
+            const user = usersData[email] || { role: "student" };
+            const studentSection = document.getElementById('student-assignments-section');
+            const pendingList = document.getElementById('pending-assignments-list');
+            const semesterCardsList = document.getElementById('semester-cards-list');
+            const todayDate = getTodayFormatted();
+
+            // Show today's date
+            document.getElementById('today-date').innerText = todayDate;
+
+            // --- Build semester cards based on role ---
+            semesterCardsList.innerHTML = "";
+            if (user.role === 'faculty') {
+                // Faculty sees all 4 semesters
+                var allSemesters = ["BSc first semester", "BSc third semester", "BSc fifth semester", "BSc seventh semester"];
+                allSemesters.forEach(function(sem) {
+                    semesterCardsList.innerHTML += '<div class="card" onclick="openCourse(\'' + sem + '\')">' + sem + '</div>';
+                });
+                studentSection.classList.add('hidden');
+            } else {
+                // Student sees only their enrolled semester
+                if (user.semester && courseData[user.semester]) {
+                    semesterCardsList.innerHTML += '<div class="card" onclick="openCourse(\'' + user.semester + '\')">' + user.semester + '</div>';
+                } else {
+                    semesterCardsList.innerHTML = '<p style="font-size:0.9rem; color:#666;">No classes assigned yet.</p>';
+                }
+
+                // --- Build dummy assignments for student ---
+                studentSection.classList.remove('hidden');
+                pendingList.innerHTML = "";
+
+                if (user.semester && courseData[user.semester]) {
+                    // Get unique subject names from their semester
+                    var seen = {};
+                    var uniqueSubjects = [];
+                    courseData[user.semester].forEach(function(cls) {
+                        if (!seen[cls.title]) {
+                            seen[cls.title] = true;
+                            uniqueSubjects.push(cls.title);
+                        }
+                    });
+
+                    uniqueSubjects.forEach(function(subTitle) {
+                        pendingList.innerHTML += '<div class="assignment-card">' +
+                            '<div class="assignment-title">' + subTitle + '</div>' +
+                            '<div style="font-size: 0.85rem; color: #888; margin-bottom: 2px;">' + todayDate + '</div>' +
+                            '<div style="font-size: 0.85rem; color: #666;">This is a dummy assignment</div>' +
+                            '<div class="assignment-actions">' +
+                            '<button class="action-btn" onclick="submitAssignment(\'' + user.semester + '\', \'' + subTitle + '\')">Submit Assignment</button>' +
+                            '</div></div>';
+                    });
+                } else {
+                    pendingList.innerHTML = '<p style="font-size:0.9rem; color:#666;">No pending assignments.</p>';
+                }
+            }
         }
 
         // Login Logic
         document.getElementById('login-form').addEventListener('submit', function(e) {
             e.preventDefault();
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
+            
+            const rawEmail = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value.trim();
             const errorMsg = document.getElementById('login-error');
 
-            if ((email === "minoshvcn@gmail.com" && password === "Minosh1987") || 
-                (email === "dennisvcn@gmail.com" && password === "Dennis2026")) {
-                
+            const email = normalizeEmail(rawEmail);
+            const user = usersData[email];
+
+            if (user && user.pass === password) {
                 localStorage.setItem('isLoggedIn', 'true');
                 localStorage.setItem('userEmail', email);
+                localStorage.setItem('userRole', user.role);
                 
                 setGreeting(email);
+                setupDashboard(email);
                 
-                // Set history state for device back alignment
                 history.pushState({ page: 'dashboard' }, '', '#dashboard');
                 
                 document.getElementById('login-screen').classList.add('hidden');
@@ -455,84 +1090,101 @@
         function logout() {
             localStorage.removeItem('isLoggedIn');
             localStorage.removeItem('userEmail');
+            localStorage.removeItem('userRole');
             
             document.getElementById('email').value = "";
             document.getElementById('password').value = "";
             document.getElementById('youtube-player').src = ""; 
             
-            // Set history state to prevent user from going "back" into the app after logout
             history.pushState({ page: 'login' }, '', '#login');
-            
-            document.getElementById('dashboard-screen').classList.add('hidden');
-            document.getElementById('course-screen').classList.add('hidden');
-            document.getElementById('video-screen').classList.add('hidden');
-            
-            document.getElementById('login-screen').classList.remove('hidden');
+            showScreen('login-screen');
         }
 
-        // --- NAVIGATION LOGIC ---
-
-        function showScreen(screenId) {
-            ['login-screen', 'dashboard-screen', 'course-screen', 'video-screen'].forEach(id => {
-                document.getElementById(id).classList.add('hidden');
-            });
-            document.getElementById(screenId).classList.remove('hidden');
-        }
-
-        // Dashboard -> Course
+        // Course -> Video / Assignments
         function openCourse(courseName) {
             currentCourse = courseName;
+            const userRole = localStorage.getItem('userRole') || 'student';
             
-            // Push into Browser History stack
             history.pushState({ page: 'course' }, '', '#course');
-            
             showScreen('course-screen');
             document.getElementById('course-title').innerText = courseName;
 
             const classListContainer = document.getElementById('class-list');
-            classListContainer.innerHTML = ""; 
+            classListContainer.innerHTML = "";
+
+            // Show date at top of course screen
+            var todayDate = getTodayFormatted();
+            classListContainer.innerHTML = '<div style="font-size: 0.9rem; color: #888; margin-bottom: 15px;">' + todayDate + '</div>';
+
+            // For faculty, show student count for this semester
+            if (userRole === 'faculty') {
+                var studentCount = semesterEmails[courseName] ? semesterEmails[courseName].length : 0;
+                classListContainer.innerHTML += '<div style="font-size: 0.85rem; color: #4A90E2; margin-bottom: 15px; font-weight: bold;">Registered Students: ' + studentCount + '</div>';
+            }
 
             const classes = courseData[courseName];
             if (classes) {
                 classes.forEach((classData, index) => {
                     const classItem = document.createElement('div');
                     classItem.className = "class-card";
-                    classItem.onclick = () => openVideo(index);
+                    classItem.style.flexDirection = "column";
+                    classItem.style.alignItems = "flex-start";
                     
-                    classItem.innerHTML = `
-                        <div class="class-icon">▶</div>
-                        <div>
-                            <div style="font-weight: bold; font-size: 1.1rem; margin-bottom: 3px;">${classData.title}</div>
-                            <div style="font-size: 0.85rem; color: #888;">${classData.time} • ${classData.instructor}</div>
-                        </div>
-                    `;
+                    let innerHTML = '<div style="display: flex; align-items: center; width: 100%; cursor: pointer;" onclick="openVideo(' + index + ')">' +
+                        '<div class="class-icon">&#9654;</div>' +
+                        '<div style="flex: 1;">' +
+                        '<div style="font-weight: bold; font-size: 1.1rem; margin-bottom: 3px;">' + classData.title + '</div>' +
+                        '<div style="font-size: 0.85rem; color: #888;">' + classData.time + ' &bull; ' + classData.instructor + '</div>' +
+                        '</div></div>';
+
+                    if (userRole === 'faculty') {
+                        innerHTML += '<div style="width: 100%; margin-top: 15px; border-top: 1px solid #eee; padding-top: 10px;">' +
+                            '<button class="action-btn" style="width: 100%;" onclick="createAssignment(\'' + courseName + '\', \'' + classData.title + '\')">' +
+                            '+ Create Assignment</button></div>';
+                    }
+                    
+                    classItem.innerHTML = innerHTML;
                     classListContainer.appendChild(classItem);
                 });
             }
         }
 
-        // Course -> Video (FIXED)
+        // --- EMAIL AUTOMATION LOGIC ---
+        function createAssignment(semester, subject) {
+            var emailsList = semesterEmails[semester] ? semesterEmails[semester].join(',') : "";
+            var todayDate = getTodayFormatted();
+            var subjectLine = encodeURIComponent('New Assignment: ' + subject + ' | ' + semester + ' | ' + todayDate);
+            var body = encodeURIComponent('Dear Students,\n\nDate: ' + todayDate + '\nSemester: ' + semester + '\nSubject: ' + subject + '\n\nPlease find the assignment details below.\n\n[ENTER ASSIGNMENT DETAILS OR ATTACH FILE HERE]\n\nRegards,\nFaculty\nJubilee Mission Medical College');
+            // Open mail client: TO = self (faculty), BCC = all semester students
+            window.open('mailto:onlineclass@jminstitutions.com?bcc=' + emailsList + '&subject=' + subjectLine + '&body=' + body, '_self');
+        }
+
+        function submitAssignment(semester, subject) {
+            var userEmail = localStorage.getItem('userEmail') || '';
+            var user = usersData[userEmail] || { name: 'Student' };
+            var studentName = user.name || 'Student';
+            var todayDate = getTodayFormatted();
+            var subjectLine = encodeURIComponent('Assignment Submission: ' + semester + ' - ' + subject + ' - ' + studentName);
+            var body = encodeURIComponent('Respected Faculty,\n\nDate: ' + todayDate + '\nStudent Name: ' + studentName + '\nEmail: ' + userEmail + '\nSemester: ' + semester + '\nSubject: ' + subject + '\n\nPlease find attached my assignment for ' + subject + '.\n\n(Remember to attach your file before sending!)\n\nRegards,\n' + studentName);
+            window.open('mailto:onlineclass@jminstitutions.com?subject=' + subjectLine + '&body=' + body, '_self');
+        }
+
+        // --- VIDEO LOGIC ---
         function openVideo(index) {
             const classInfo = courseData[currentCourse][index];
             const videoUrl = classInfo.url;
 
-            // Check if the URL is a Google Meet link
             if (videoUrl.includes("meet.google.com")) {
-                // This is the "Deep Link" - it forces the phone to open the Meet App
                 window.open(videoUrl, '_blank'); 
-                return; // Stop the code here so it doesn't open the blank video screen
+                return;
             }
 
-            // Original Logic: If it's a YouTube link, open it in the iframe normally
             history.pushState({ page: 'video' }, '', '#video');
-            
             showScreen('video-screen');
-            document.getElementById('playing-class-title').innerText = `${classInfo.title} (${classInfo.instructor})`;
-            
+            document.getElementById('playing-class-title').innerText = classInfo.title + ' (' + classInfo.instructor + ')';
             document.getElementById('youtube-player').src = videoUrl;
         }
 
-        // On-screen Back Buttons just trigger the Browser Back event naturally
         function goBackToDashboard() {
             history.back();
         }
@@ -541,11 +1193,8 @@
             history.back();
         }
 
-        // The Magic Hardware Back Button Listener
         window.addEventListener('popstate', (event) => {
-            // Always cut the video if we hit back
             document.getElementById('youtube-player').src = ""; 
-
             const state = event.state ? event.state.page : '';
 
             if (state === 'video') {
@@ -555,7 +1204,6 @@
             } else if (state === 'dashboard') {
                 showScreen('dashboard-screen');
             } else {
-                // If there's no state (root), default back based on auth
                 if (localStorage.getItem('isLoggedIn') === 'true') {
                     showScreen('dashboard-screen');
                 } else {
