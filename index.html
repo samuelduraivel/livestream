@@ -302,6 +302,205 @@
             opacity: 0.8;
         }
 
+        /* Noticeboard UI Elements */
+        .noticeboard-main-btn {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, #FF6B6B, #FF8E53);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.4);
+            transition: transform 0.2s, box-shadow 0.2s;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .noticeboard-main-btn:active {
+            transform: scale(0.98);
+            box-shadow: 0 2px 10px rgba(255, 107, 107, 0.3);
+        }
+
+        .notice-link-btn {
+            background: var(--card-bg);
+            color: var(--primary-color);
+            padding: 14px;
+            border: 2px solid var(--primary-color);
+            border-radius: 8px;
+            font-size: 1.05rem;
+            font-weight: bold;
+            text-align: center;
+            cursor: pointer;
+            text-decoration: none;
+            display: block;
+            transition: background 0.2s;
+        }
+
+        .notice-link-btn:active {
+            background: rgba(74, 144, 226, 0.1);
+        }
+
+        .submit-assign-main-btn {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, #43C6AC, #191654);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(67, 198, 172, 0.35);
+            transition: transform 0.2s;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .submit-assign-main-btn:active {
+            transform: scale(0.98);
+        }
+
+        .modal-card {
+            background: var(--card-bg);
+            border-radius: 10px;
+            padding: 18px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.07);
+        }
+
+        .form-label {
+            display: block;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #555;
+            margin-bottom: 6px;
+        }
+
+        .form-select {
+            width: 100%;
+            padding: 11px 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            background: #fff;
+            outline: none;
+            color: var(--text-color);
+        }
+
+        .form-textarea {
+            width: 100%;
+            padding: 11px 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            min-height: 90px;
+            resize: vertical;
+            outline: none;
+            color: var(--text-color);
+            font-family: inherit;
+        }
+
+        .form-file-input {
+            width: 100%;
+            padding: 8px 0;
+            font-size: 0.9rem;
+            color: #555;
+        }
+
+        /* Faculty class update modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.45);
+            z-index: 999;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+        }
+
+        .modal-box {
+            background: var(--bg-color);
+            width: 100%;
+            max-width: 500px;
+            border-radius: 18px 18px 0 0;
+            padding: 24px 20px 36px 20px;
+            animation: slideUp 0.3s ease;
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(100%); }
+            to { transform: translateY(0); }
+        }
+
+        .send-update-btn {
+            width: 100%;
+            padding: 13px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 12px;
+        }
+
+        /* Inline class list for student */
+        .student-class-item {
+            background: var(--card-bg);
+            padding: 14px 16px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+            border-left: 4px solid var(--primary-color);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .student-class-item:active {
+            opacity: 0.8;
+        }
+
+        .student-class-icon {
+            width: 36px;
+            height: 36px;
+            background: rgba(74,144,226,0.12);
+            color: var(--primary-color);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-shrink: 0;
+            font-size: 0.9rem;
+        }
+
+        /* Faculty send update btn inside course screen */
+        .faculty-update-btn {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 12px rgba(102,126,234,0.35);
+        }
+
         /* Class Details Screen */
         .class-card {
             background: var(--card-bg);
@@ -391,20 +590,60 @@
             <div class="welcome-msg" id="user-greeting">Welcome,</div>
             <div id="today-date" style="font-size: 0.9rem; color: #888; margin-bottom: 15px;"></div>
 
-            <!-- Student Only: Pending Assignments -->
-            <div id="student-assignments-section" class="hidden">
-                <div class="section-title">Pending Assignments</div>
-                <div id="pending-assignments-list" class="grid-list">
-                    <!-- Populated dynamically -->
+            <!-- STUDENT DASHBOARD -->
+            <div id="student-dashboard" class="hidden">
+                <div id="student-semester-label" class="section-title"></div>
+                <div id="student-class-list"></div>
+
+                <!-- Noticeboard -->
+                <div id="noticeboard-section" class="hidden" style="margin-top: 30px;">
+                    <button id="noticeboard-toggle-btn" class="noticeboard-main-btn" onclick="toggleNoticeboard()">
+                        📢 Class Noticeboard
+                    </button>
+                    <div id="noticeboard-links-container" class="hidden grid-list" style="margin-top: 15px;"></div>
                 </div>
-                <div style="text-align: center; font-size: 0.85rem; color: #888; margin-top: 10px; margin-bottom: 20px;">
-                    (Ignore if already submitted)
+
+                <!-- Submit Assignment -->
+                <div id="submit-assignment-section" style="margin-top: 20px;">
+                    <button class="submit-assign-main-btn" onclick="toggleSubmitAssignment()">
+                        📝 Submit Assignment
+                    </button>
+                    <div id="submit-assignment-form" class="hidden" style="margin-top: 15px;">
+                        <div class="modal-card">
+                            <label class="form-label">Select Subject</label>
+                            <select id="assignment-subject-dropdown" class="form-select"></select>
+                            <label class="form-label" style="margin-top:14px;">Attach File</label>
+                            <input type="file" id="assignment-file-input" class="form-file-input">
+                            <button class="action-btn" style="margin-top:16px; width:100%;" onclick="doSubmitAssignment()">Send Assignment ✉️</button>
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            <div class="section-title">Live Classes Available</div>
-            <div class="grid-list" id="semester-cards-list">
-                <!-- Populated dynamically based on role -->
+            <!-- FACULTY DASHBOARD -->
+            <div id="faculty-dashboard" class="hidden">
+                <div class="section-title">Live Classes — All Semesters</div>
+                <div class="grid-list" id="semester-cards-list"></div>
+            </div>
+        </div>
+
+        <!-- Faculty: Send Class Update Modal -->
+        <div id="class-update-modal" class="modal-overlay hidden" onclick="closeUpdateModal(event)">
+            <div class="modal-box" onclick="event.stopPropagation()">
+                <div style="font-size:1.1rem; font-weight:bold; margin-bottom:14px; color:var(--secondary-color);">📣 Send Class Update</div>
+                <div id="modal-semester-label" style="font-size:0.85rem; color:#888; margin-bottom:14px;"></div>
+                <label class="form-label">Update Type</label>
+                <select id="update-type-dropdown" class="form-select">
+                    <option value="Assignment">Assignment</option>
+                    <option value="Class Notes">Class Notes</option>
+                    <option value="General Notification">General Notification</option>
+                </select>
+                <label class="form-label" style="margin-top:14px;">Details</label>
+                <textarea id="update-details-text" class="form-textarea" placeholder="Enter details here..."></textarea>
+                <label class="form-label" style="margin-top:14px;">Attach File (optional)</label>
+                <input type="file" id="update-file-input" class="form-file-input">
+                <button class="action-btn" style="margin-top:18px; width:100%;" onclick="sendClassUpdate()">Send Update ✉️</button>
+                <button class="action-btn secondary" style="margin-top:10px; width:100%;" onclick="document.getElementById('class-update-modal').classList.add('hidden')">Cancel</button>
             </div>
         </div>
     </div>
@@ -470,6 +709,23 @@
                 { title: "COHN II", time: "12:00 PM - 01:00 PM", instructor: "Mrs. Geetha S T", url: "https://meet.google.com/caa-wjnj-ata" },
                 { title: "Midwifery II", time: "02:00 PM - 03:00 PM", instructor: "Mrs. Manimegalai", url: "https://meet.google.com/caa-wjnj-ata" },
                 { title: "Midwifery II", time: "03:00 PM - 04:00 PM", instructor: "Mrs. Sangeetha", url: "https://meet.google.com/caa-wjnj-ata" }
+            ]
+        };
+
+        const noticeboardData = {
+            "BSc first semester": [
+                { title: "First Sem Drive Folder", url: "https://drive.google.com/..." },
+                { title: "Important Announcements", url: "https://docs.google.com/..." }
+            ],
+            "BSc third semester": [
+                { title: "Third Sem Study Materials", url: "https://drive.google.com/..." },
+                { title: "Clinical Postings Schedule", url: "https://docs.google.com/..." }
+            ],
+            "BSc fifth semester": [
+                { title: "Fifth Sem Drive Folder", url: "https://drive.google.com/..." }
+            ],
+            "BSc seventh semester": [
+                { title: "Seventh Sem Notes", url: "https://drive.google.com/..." }
             ]
         };
 
@@ -940,8 +1196,10 @@
         loadUsersFromCSV(rawCSVData);
 
         // Step 2: Add hardcoded users AFTER CSV loading so they cannot be overwritten
-        usersData["minoshvcn@gmail.com"] = { name: "Minosh", pass: "Minosh1987", role: "student" };
-        usersData["dennisvcn@gmail.com"] = { name: "Dennis", pass: "Dennis2026", role: "student" };
+        usersData["minoshvcn@gmail.com"] = { name: "Minosh", pass: "Minosh1987", role: "student", semester: "BSc first semester" };
+        if (!semesterEmails["BSc first semester"].includes("minoshvcn@gmail.com")) semesterEmails["BSc first semester"].push("minoshvcn@gmail.com");
+        usersData["dennisvcn@gmail.com"] = { name: "Dennis", pass: "Dennis2026", role: "student", semester: "BSc third semester" };
+        if (!semesterEmails["BSc third semester"].includes("dennisvcn@gmail.com")) semesterEmails["BSc third semester"].push("dennisvcn@gmail.com");
         usersData["onlineclass@jminstitutions.com"] = { name: "Faculty Admin", pass: "jUBILEEM123", role: "faculty" };
 
         // UI Interactions
@@ -962,6 +1220,7 @@
             ['login-screen', 'dashboard-screen', 'course-screen', 'video-screen'].forEach(id => {
                 document.getElementById(id).classList.add('hidden');
             });
+            document.getElementById('class-update-modal').classList.add('hidden');
             document.getElementById(screenId).classList.remove('hidden');
         }
 
@@ -993,58 +1252,222 @@
 
         function setupDashboard(email) {
             const user = usersData[email] || { role: "student" };
-            const studentSection = document.getElementById('student-assignments-section');
-            const pendingList = document.getElementById('pending-assignments-list');
-            const semesterCardsList = document.getElementById('semester-cards-list');
             const todayDate = getTodayFormatted();
-
-            // Show today's date
             document.getElementById('today-date').innerText = todayDate;
 
-            // --- Build semester cards based on role ---
-            semesterCardsList.innerHTML = "";
+            const studentDash = document.getElementById('student-dashboard');
+            const facultyDash = document.getElementById('faculty-dashboard');
+
             if (user.role === 'faculty') {
-                // Faculty sees all 4 semesters
+                studentDash.classList.add('hidden');
+                facultyDash.classList.remove('hidden');
+
+                // Faculty sees all 4 semesters as clickable cards
+                const semesterCardsList = document.getElementById('semester-cards-list');
+                semesterCardsList.innerHTML = "";
                 var allSemesters = ["BSc first semester", "BSc third semester", "BSc fifth semester", "BSc seventh semester"];
                 allSemesters.forEach(function(sem) {
                     semesterCardsList.innerHTML += '<div class="card" onclick="openCourse(\'' + sem + '\')">' + sem + '</div>';
                 });
-                studentSection.classList.add('hidden');
+
             } else {
-                // Student sees only their enrolled semester
+                facultyDash.classList.add('hidden');
+                studentDash.classList.remove('hidden');
+
+                // Show semester label
+                var semLabel = document.getElementById('student-semester-label');
+                semLabel.innerText = user.semester ? ('📚 ' + user.semester) : 'Your Classes';
+
+                // Show classes inline (not clickable card — just a list)
+                var classListEl = document.getElementById('student-class-list');
+                classListEl.innerHTML = "";
                 if (user.semester && courseData[user.semester]) {
-                    semesterCardsList.innerHTML += '<div class="card" onclick="openCourse(\'' + user.semester + '\')">' + user.semester + '</div>';
-                } else {
-                    semesterCardsList.innerHTML = '<p style="font-size:0.9rem; color:#666;">No classes assigned yet.</p>';
-                }
-
-                // --- Build dummy assignments for student ---
-                studentSection.classList.remove('hidden');
-                pendingList.innerHTML = "";
-
-                if (user.semester && courseData[user.semester]) {
-                    // Get unique subject names from their semester
-                    var seen = {};
-                    var uniqueSubjects = [];
-                    courseData[user.semester].forEach(function(cls) {
-                        if (!seen[cls.title]) {
-                            seen[cls.title] = true;
-                            uniqueSubjects.push(cls.title);
-                        }
-                    });
-
-                    uniqueSubjects.forEach(function(subTitle) {
-                        pendingList.innerHTML += '<div class="assignment-card">' +
-                            '<div class="assignment-title">' + subTitle + '</div>' +
-                            '<div style="font-size: 0.85rem; color: #888; margin-bottom: 2px;">' + todayDate + '</div>' +
-                            '<div style="font-size: 0.85rem; color: #666;">This is a dummy assignment</div>' +
-                            '<div class="assignment-actions">' +
-                            '<button class="action-btn" onclick="submitAssignment(\'' + user.semester + '\', \'' + subTitle + '\')">Submit Assignment</button>' +
+                    courseData[user.semester].forEach(function(cls, idx) {
+                        classListEl.innerHTML += '<div class="student-class-item" onclick="openVideoForStudent(\'' + user.semester + '\',' + idx + ')">' +
+                            '<div class="student-class-icon">&#9654;</div>' +
+                            '<div>' +
+                            '<div style="font-weight:bold; font-size:1rem;">' + cls.title + '</div>' +
+                            '<div style="font-size:0.82rem; color:#888;">' + cls.time + ' &bull; ' + cls.instructor + '</div>' +
                             '</div></div>';
                     });
                 } else {
-                    pendingList.innerHTML = '<p style="font-size:0.9rem; color:#666;">No pending assignments.</p>';
+                    classListEl.innerHTML = '<p style="font-size:0.9rem; color:#666;">No classes scheduled today.</p>';
                 }
+
+                // Noticeboard
+                var noticeboardSection = document.getElementById('noticeboard-section');
+                var noticeboardContainer = document.getElementById('noticeboard-links-container');
+                noticeboardContainer.innerHTML = "";
+                noticeboardContainer.classList.add('hidden');
+
+                if (user.semester && noticeboardData[user.semester] && noticeboardData[user.semester].length > 0) {
+                    noticeboardSection.classList.remove('hidden');
+                    noticeboardData[user.semester].forEach(function(linkItem) {
+                        noticeboardContainer.innerHTML += '<a href="' + linkItem.url + '" target="_blank" class="notice-link-btn">' + linkItem.title + '</a>';
+                    });
+                } else {
+                    noticeboardSection.classList.add('hidden');
+                }
+
+                // Submit assignment — populate subject dropdown
+                var dropdown = document.getElementById('assignment-subject-dropdown');
+                dropdown.innerHTML = '';
+                document.getElementById('submit-assignment-form').classList.add('hidden');
+
+                if (user.semester && courseData[user.semester]) {
+                    var seen = {};
+                    courseData[user.semester].forEach(function(cls) {
+                        if (!seen[cls.title]) {
+                            seen[cls.title] = true;
+                            var opt = document.createElement('option');
+                            opt.value = cls.title;
+                            opt.textContent = cls.title;
+                            dropdown.appendChild(opt);
+                        }
+                    });
+                }
+            }
+        }
+
+        // Student opens video directly (no intermediate course screen)
+        function openVideoForStudent(courseName, index) {
+            currentCourse = courseName;
+            const classInfo = courseData[courseName][index];
+            const videoUrl = classInfo.url;
+            if (videoUrl.includes("meet.google.com")) {
+                window.open(videoUrl, '_blank');
+                return;
+            }
+            history.pushState({ page: 'video' }, '', '#video');
+            showScreen('video-screen');
+            document.getElementById('playing-class-title').innerText = classInfo.title + ' (' + classInfo.instructor + ')';
+            document.getElementById('youtube-player').src = videoUrl;
+        }
+
+        // Toggle visibility of the Noticeboard links
+        function toggleNoticeboard() {
+            const container = document.getElementById('noticeboard-links-container');
+            container.classList.toggle('hidden');
+        }
+
+        // Toggle Submit Assignment form
+        function toggleSubmitAssignment() {
+            const form = document.getElementById('submit-assignment-form');
+            form.classList.toggle('hidden');
+        }
+
+        // Student submits assignment — opens mail client
+        // ── Apps Script endpoint ──────────────────────────────
+        const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyMtlLAn4iO1hZjhPReTw67HBI1sjiOS4w1_R4KTtNDR6sIQA59ig335NaNrBqixMTH/exec";
+
+        function fileToBase64(file) {
+            return new Promise(function(resolve, reject) {
+                var reader = new FileReader();
+                reader.onload  = function() { resolve(reader.result.split(',')[1]); };
+                reader.onerror = reject;
+                reader.readAsDataURL(file);
+            });
+        }
+
+        async function doSubmitAssignment() {
+            var userEmail   = localStorage.getItem('userEmail') || '';
+            var user        = usersData[userEmail] || { name: 'Student', semester: '' };
+            var studentName = user.name || 'Student';
+            var semester    = user.semester || '';
+            var subject     = document.getElementById('assignment-subject-dropdown').value;
+            var fileInput   = document.getElementById('assignment-file-input');
+
+            var payload = {
+                type: "student_submission",
+                studentName: studentName,
+                studentEmail: userEmail,
+                semester: semester,
+                subject: subject
+            };
+
+            if (fileInput.files.length > 0) {
+                var file = fileInput.files[0];
+                payload.fileBase64   = await fileToBase64(file);
+                payload.fileName     = file.name;
+                payload.fileMimeType = file.type;
+            }
+
+            var btn = document.querySelector('#submit-assignment-form .action-btn');
+            btn.textContent = 'Sending…';
+            btn.disabled = true;
+
+            try {
+                var res  = await fetch(APPS_SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload) });
+                var json = await res.json();
+                if (json.success) {
+                    alert('✅ Assignment submitted successfully!');
+                    document.getElementById('submit-assignment-form').classList.add('hidden');
+                    fileInput.value = '';
+                } else {
+                    alert('Error: ' + (json.error || 'Unknown error'));
+                }
+            } catch (err) {
+                alert('Network error. Please check your connection and try again.');
+            } finally {
+                btn.textContent = 'Send Assignment ✉️';
+                btn.disabled = false;
+            }
+        }
+
+        // Faculty: open send-class-update modal
+        var _currentUpdateSemester = "";
+        function openUpdateModal(semester) {
+            _currentUpdateSemester = semester;
+            document.getElementById('modal-semester-label').innerText = semester;
+            document.getElementById('update-type-dropdown').value = 'Assignment';
+            document.getElementById('update-details-text').value = '';
+            document.getElementById('update-file-input').value = '';
+            document.getElementById('class-update-modal').classList.remove('hidden');
+        }
+
+        function closeUpdateModal(event) {
+            document.getElementById('class-update-modal').classList.add('hidden');
+        }
+
+        async function sendClassUpdate() {
+            var updateType = document.getElementById('update-type-dropdown').value;
+            var details    = document.getElementById('update-details-text').value.trim();
+            var fileInput  = document.getElementById('update-file-input');
+
+            if (!details) { alert('Please enter some details before sending.'); return; }
+
+            var payload = {
+                type: "faculty_update",
+                semester: _currentUpdateSemester,
+                updateType: updateType,
+                details: details
+            };
+
+            if (fileInput.files.length > 0) {
+                var file = fileInput.files[0];
+                payload.fileBase64   = await fileToBase64(file);
+                payload.fileName     = file.name;
+                payload.fileMimeType = file.type;
+            }
+
+            var btn = document.querySelector('#class-update-modal .action-btn');
+            btn.textContent = 'Sending…';
+            btn.disabled = true;
+
+            try {
+                var res  = await fetch(APPS_SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload) });
+                var json = await res.json();
+                if (json.success) {
+                    alert('✅ Class update sent!');
+                    document.getElementById('class-update-modal').classList.add('hidden');
+                } else {
+                    alert('Error: ' + (json.error || 'Unknown error'));
+                }
+            } catch (err) {
+                alert('Network error. Please check your connection and try again.');
+            } finally {
+                btn.textContent = 'Send Update ✉️';
+                btn.disabled = false;
             }
         }
 
@@ -1107,10 +1530,11 @@
             var todayDate = getTodayFormatted();
             classListContainer.innerHTML = '<div style="font-size: 0.9rem; color: #888; margin-bottom: 15px;">' + todayDate + '</div>';
 
-            // For faculty, show student count for this semester
+            // For faculty, show student count + Send Class Update button
             if (userRole === 'faculty') {
                 var studentCount = semesterEmails[courseName] ? semesterEmails[courseName].length : 0;
                 classListContainer.innerHTML += '<div style="font-size: 0.85rem; color: #4A90E2; margin-bottom: 15px; font-weight: bold;">Registered Students: ' + studentCount + '</div>';
+                classListContainer.innerHTML += '<button class="faculty-update-btn" onclick="openUpdateModal(\'' + courseName + '\')">📣 Send Class Update</button>';
             }
 
             const classes = courseData[courseName];
