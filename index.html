@@ -355,11 +355,6 @@
     </style>
 </head>
 <body>
-
-    <div id="splash-screen" class="screen">
-        <img src="app_icon.png" alt="App Icon" onerror="this.style.display='none'">
-    </div>
-
     <div id="login-screen" class="screen hidden">
         <div class="login-card">
             <img src="app_icon.png" alt="App Icon" class="login-logo" onerror="this.style.display='none'">
@@ -972,20 +967,16 @@
 
         // Application Initialization
         window.addEventListener('load', () => {
-            setTimeout(() => {
-                document.getElementById('splash-screen').classList.add('hidden');
-                
-                if (localStorage.getItem('isLoggedIn') === 'true') {
-                    const savedEmail = localStorage.getItem('userEmail');
-                    setGreeting(savedEmail);
-                    setupDashboard(savedEmail);
-                    history.replaceState({ page: 'dashboard' }, '', '#dashboard');
-                    document.getElementById('dashboard-screen').classList.remove('hidden');
-                } else {
-                    history.replaceState({ page: 'login' }, '', '#login');
-                    document.getElementById('login-screen').classList.remove('hidden');
-                }
-            }, 3000); 
+            if (localStorage.getItem('isLoggedIn') === 'true') {
+                const savedEmail = localStorage.getItem('userEmail');
+                setGreeting(savedEmail);
+                setupDashboard(savedEmail);
+                history.replaceState({ page: 'dashboard' }, '', '#dashboard');
+                document.getElementById('dashboard-screen').classList.remove('hidden');
+            } else {
+                history.replaceState({ page: 'login' }, '', '#login');
+                document.getElementById('login-screen').classList.remove('hidden');
+            }
         });
 
         // Dashboard & Greeting Logic
